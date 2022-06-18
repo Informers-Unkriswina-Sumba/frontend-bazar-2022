@@ -1,7 +1,6 @@
 import { Box, Container } from '@chakra-ui/layout';
 import Head from 'next/head';
 import React, { ReactNode } from 'react';
-import { Chakra } from '../../../Chakra';
 import NavigationUp from '../NavigationUp';
 import Header from '../Header';
 import BottomNavigation from 'components/BottomNavigation';

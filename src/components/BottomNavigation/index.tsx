@@ -25,7 +25,7 @@ const BottomNavigation: React.FC<IProps> = (): ReactElement => {
         color='white'
       >
         {APP_ROUTE_MAIN.map((route, index) => (
-          <Link href={route.key}>
+          <Link href={route.key} key={index}>
             <Flex
               p='8px'
               h='full'
