@@ -13,9 +13,10 @@ import '@fontsource/nunito/600.css';
 import '@fontsource/nunito/700.css';
 import '@fontsource/nunito/800.css';
 import '@fontsource/nunito/900.css';
+// import '@fontsource/roboto';
 
 interface ChakraProps {
-  cookies?: string;
+  cookies?: any;
   children: ReactNode;
 }
 

@@ -7,6 +7,9 @@ import { AppProps } from 'next/dist/shared/lib/router/router';
 import type { NextRouter } from 'next/router';
 import '../styles/normalize.css';
 import '../styles/suitcss-base.css';
+import '../styles/globals.css';
+import { ChakraProvider } from '@chakra-ui/react';
+
 export interface AppRenderProps {
   pageProps: object;
   err?: Error;
@@ -31,9 +34,9 @@ const GlobalStyles = css`
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
-    <>
+    <ChakraProvider>
       <Global styles={GlobalStyles} />
       <Component {...pageProps} />
-    </>
+    </ChakraProvider>
   );
 }

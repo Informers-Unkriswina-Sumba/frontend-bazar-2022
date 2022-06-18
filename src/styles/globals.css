@@ -43,3 +43,49 @@ a {
   background-color: rgba(0, 0, 0, 0.1);
   border-radius: 0.5em;
 }
+
+.AppHeader {
+  /* box-shadow: rgba(240, 46, 170, 0.4) 0px 5px, rgba(240, 46, 170, 0.3) 0px 10px,
+    rgba(240, 46, 170, 0.2) 0px 15px, #f02eaa1a 0px 20px,
+    rgba(240, 46, 170, 0.05) 0px 25px; */
+  display: flex;
+  justify-content: center;
+  /* box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 3px 0px,
+    rgba(0, 0, 0, 0.06) 0px 1px 2px 0px; */
+}
+
+.containerMainApp {
+  display: flex;
+  justify-content: center;
+  min-height: 100vh;
+}
+
+.contentAppHeader {
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 3px 0px,
+    rgba(0, 0, 0, 0.06) 0px 1px 2px 0px;
+}
+
+.mainApp {
+  box-shadow: rgb(0 0 0 / 15%) 0px 5px 15px 0px;
+}
+
+.mainApp,
+.contentAppHeader {
+  width: 576px;
+}
+
+.ContainerNavigateUp {
+  position: fixed;
+  bottom: 5%;
+}
+
+/* Extra small devices (phones, 600px and down) */
+@media only screen and (max-width: 600px) {
+  .mainApp,
+  .contentAppHeader {
+    width: 100%;
+  }
+
+  .ContainerNavigateUp {
+  }
+}
