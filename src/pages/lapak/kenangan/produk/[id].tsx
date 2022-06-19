@@ -1,18 +1,19 @@
+import { Box, Flex, Heading, Text } from '@chakra-ui/layout';
 import LayoutMainApp from 'components/Layout/LayoutMainApp';
 import { APP_TITLE } from 'constant';
 import type { NextPage } from 'next';
 import Head from 'next/head';
 
-const Lapak: NextPage = () => {
+const Produk: NextPage = () => {
   return (
     <LayoutMainApp>
       <Head>
-        <title>{APP_TITLE} | Humba Food</title>
+        <title>{APP_TITLE} | Produk</title>
         <link rel='icon' href='/favicon.ico' />
       </Head>
-      Lapak Humba Food
+      Produk Detail
     </LayoutMainApp>
   );
 };
 
-export default Lapak;
+export default Produk;

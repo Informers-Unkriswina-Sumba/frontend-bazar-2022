@@ -21,7 +21,7 @@ export const APP_ROUTE_DRAWER = [
   },
   {
     key: '/keranjang',
-    label: 'Kerangjang',
+    label: 'Keranjang',
     icon: <BsCart3 />,
   },
 ];
@@ -34,7 +34,7 @@ export const APP_ROUTE_MAIN = [
   },
   {
     key: '/keranjang',
-    label: 'Kerangjang',
+    label: 'Keranjang',
     icon: <BsCart3 />,
   },
 ];

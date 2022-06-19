@@ -14,8 +14,10 @@ const NavigationUpToMainApp: React.FC<IProps> = (): ReactElement => {
   return (
     <Box position='fixed' bottom='20px' right='15px'>
       <Button
+        backgroundColor='#44A68F'
         onClick={gotoMainView}
-        leftIcon={<FaCartPlus size={36} fill='#d53f8c' />}
+        color='white'
+        leftIcon={<FaCartPlus size={36} fill='white' />}
       >
         Mulai Berlanja
       </Button>

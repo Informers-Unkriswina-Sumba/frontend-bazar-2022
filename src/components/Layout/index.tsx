@@ -19,7 +19,7 @@ const Layout: React.FC<IProps> = (props) => {
         {/* Favicon Icon */}
         <link rel='icon' href='/favicon.ico' />
 
-        <meta name='theme-color' content='#D53F8C' />
+        <meta name='theme-color' content='#1f5f51' />
 
         <meta property='og:type' content='website' />
 

@@ -26,6 +26,7 @@ const Header: React.FC<IProps> = (): ReactElement => {
       // paddingTop='4'
       // paddingBottom='4'
       // marginBottom='8'
+      backgroundColor='#1f5f51'
     >
       <Flex
         align='center'
