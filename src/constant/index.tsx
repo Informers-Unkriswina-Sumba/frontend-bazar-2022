@@ -39,4 +39,6 @@ export const APP_ROUTE_MAIN = [
   },
 ];
 
+export const BACKEND_URL = 'http://localhost:8080/api/v1';
 export const APP_TITLE = 'Bazar Unkriswina';
+export const GUEST_USER_ID_LOCAL_STORAGE = 'guest_user_id';

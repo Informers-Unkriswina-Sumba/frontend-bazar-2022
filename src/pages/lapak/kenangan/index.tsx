@@ -20,8 +20,9 @@ const Kenangan: NextPage = () => {
           productName='Kacamata Wayfarer Classic'
           numReviews='32'
           harga='150.000'
-          link='/lapak/kenangan/produk/34f34rt'
+          link='/lapak/kenangan/produk/507f1f77bcf86cd799439011'
           key={item}
+          id='507f1f77bcf86cd799439011'
         />
       ))}
     </LayoutMainApp>
