@@ -54,7 +54,7 @@ const ProdukItem: React.FC<IProps> = (props): ReactElement => {
 
   return (
     <Flex
-      p={50}
+      p={5}
       w='full'
       alignItems='center'
       justifyContent='center'
