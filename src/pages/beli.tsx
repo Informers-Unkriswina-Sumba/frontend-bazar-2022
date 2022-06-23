@@ -1,7 +1,7 @@
 import { Button } from '@chakra-ui/button';
 import { Input, InputGroup, InputLeftElement } from '@chakra-ui/input';
 import LayoutMainApp from 'components/Layout/LayoutMainApp';
-import { APP_TITLE } from 'constant';
+import { APP_TITLE, GUEST_USER_ID_LOCAL_STORAGE } from 'constant';
 import { IFormPembeli, IPembelianProduk } from 'interfaces/keranjang';
 import type { NextPage } from 'next';
 import Head from 'next/head';
@@ -28,6 +28,11 @@ import {
   ModalBody,
   ModalCloseButton,
 } from '@chakra-ui/react';
+import { ApiGetDetailProdukById } from 'api/shared';
+import { IFormGenerateInvoice } from 'interfaces/invoice';
+import { checkIsGuestIdExist } from 'helper/user';
+import { getLocal } from 'helper/localStorage';
+import { ApiGenerateInvoice, ApiPrintInvoice } from 'api/invoice';
 
 const DUMMY_PRODUCT = [
   {
@@ -37,14 +42,7 @@ const DUMMY_PRODUCT = [
     image: '',
     id: '507f1f77bcf86cd799439011',
     jumlahPembelian: 1,
-  },
-  {
-    name: 'Manggulu',
-    harga: 15000,
-    isSuspend: false,
-    image: '',
-    id: '507f1f77bcf86cd799239011',
-    jumlahPembelian: 1,
+    lapak: '507f1f77bcf86cd799439011',
   },
 ];
 
@@ -65,20 +63,27 @@ const Beli: NextPage = () => {
     });
   };
 
-  const handleBayarCOD = (e: any) => {
+  const handleBayarCOD = async (e: any) => {
     onClose();
+    checkIsGuestIdExist();
+    const guestLgin = getLocal(GUEST_USER_ID_LOCAL_STORAGE);
     let produkWithQty = dataPembelianProduk.map((product) => {
       return {
         id: product.id,
         qty: product.jumlahPembelian,
       };
     });
-    const pesanan = {
+    const pesanan: IFormGenerateInvoice = {
       dataPembeli: formDataPembeli,
       metodePembelian: 'COD',
       produk: produkWithQty,
+      guestId: guestLgin,
+      lapak: dataPembelianProduk[0].lapak,
     };
-    console.log('pesanan', pesanan);
+    const res = await ApiGenerateInvoice(pesanan);
+    if (res.status === 200) {
+      await ApiPrintInvoice(res.data.data._id);
+    }
   };
 
   const addQty = (productId: string) => {
@@ -128,11 +133,30 @@ const Beli: NextPage = () => {
     );
   };
 
+  const getListProduct = async (listProduct: any) => {
+    let itemsProduct: any[] = [];
+    for (const product of listProduct.split(',')) {
+      const productDetail = await ApiGetDetailProdukById(product);
+      if (productDetail.status === 200) {
+        itemsProduct.push({
+          name: productDetail.data.data.nama,
+          harga: productDetail.data.data.harga,
+          image: productDetail.data.data.gambar[0],
+          id: productDetail.data.data._id,
+          jumlahPembelian: 1,
+          lapak: productDetail.data.data.lapak,
+        });
+      }
+    }
+    setDataPembelianProduk(itemsProduct);
+  };
+
   useEffect(() => {
     console.log('router.query', router.query);
     if (router.query.productId) {
       console.log('router.query.productId', router.query.productId);
       setListProductId(router.query.productId);
+      getListProduct(router.query.productId);
     }
   }, [router]);
 
@@ -176,17 +200,27 @@ const Beli: NextPage = () => {
           </FormControl>
           <FormControl isRequired mt='4'>
             <FormLabel>Asal Pembeli</FormLabel>
-            <Select name='type' onChange={onChangeFormDataPembeli}>
+            <Select
+              name='type'
+              placeholder='Pilih Tipe'
+              onChange={onChangeFormDataPembeli}
+            >
               <option value='1'>Masyarakat Umum</option>
               <option value='2'>Mahasiswa</option>
               <option value='3'>Civitas Akedemi</option>
             </Select>
           </FormControl>
           <Flex mt='8' gap='10px'>
-            <Button onClick={onOpen} type='submit'>
+            <Button
+              disabled={!formDataPembeli.nama || !formDataPembeli.type}
+              onClick={onOpen}
+              type='submit'
+            >
               Bayar COD
             </Button>
-            <Button>Pesan Via Whatsapp</Button>
+            <Button disabled={!formDataPembeli.nama || !formDataPembeli.type}>
+              Pesan Via Whatsapp
+            </Button>
           </Flex>
           {/* </form> */}
         </Box>
@@ -198,10 +232,10 @@ const Beli: NextPage = () => {
           <ModalCloseButton />
           <ModalBody>Apakah kamu yakin untuk melanjutkan pemesanan ?</ModalBody>
           <ModalFooter>
-            <Button colorScheme='blue' mr={3} onClick={onClose}>
+            <Button variant='ghost' colorScheme='red' mr={3} onClick={onClose}>
               Batal
             </Button>
-            <Button onClick={handleBayarCOD} variant='ghost'>
+            <Button colorScheme='green' onClick={handleBayarCOD}>
               Ya, lanjutkan
             </Button>
           </ModalFooter>

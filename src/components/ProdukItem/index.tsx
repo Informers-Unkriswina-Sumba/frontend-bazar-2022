@@ -21,8 +21,8 @@ import { useDispatch } from 'react-redux';
 interface IProps {
   image: string;
   productName: string;
-  numReviews: string;
-  harga: string;
+  // numReviews: string;
+  harga: number;
   link: string;
   id: string;
 }
@@ -109,11 +109,11 @@ const ProdukItem: React.FC<IProps> = (props): ReactElement => {
 
           <Flex justifyContent='space-between' alignContent='center'>
             {/* <Rating rating={data.rating} numReviews={data.numReviews} /> */}
-            <Box display='flex' alignItems='center'>
+            {/* <Box display='flex' alignItems='center'>
               <Box as='span' ml='2' color='gray.600' fontSize='sm'>
                 {props.numReviews} dilihat
               </Box>
-            </Box>
+            </Box> */}
             <Box fontSize='2xl' color='gray.800'>
               <Box as='span' color={'gray.600'} fontSize='lg'>
                 Rp.

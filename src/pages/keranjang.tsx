@@ -72,7 +72,9 @@ const Keranjang: NextPage = () => {
           <>
             <Text key={index}>{keranjang.productId}</Text>
             <Button onClick={() => handleHapus(keranjang._id)}>Hapus</Button>
-            <Button onClick={() => handleBeli(keranjang._id)}>Beli</Button>
+            <Button onClick={() => handleBeli(keranjang.productId)}>
+              Beli
+            </Button>
           </>
         ))}
         {keranjang.loading && <Spinner />}

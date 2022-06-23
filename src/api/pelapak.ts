@@ -1,11 +1,12 @@
 import axios from 'axios';
-import { BACKEND_URL, GUEST_USER_ID_LOCAL_STORAGE } from 'constant';
+import { BACKEND_URL, PELAPAK_TOKEN_LOCAL_STORAGE } from 'constant';
 import { getLocal } from 'helper/localStorage';
-import { checkIsGuestIdExist } from 'helper/user';
+import { IFormLoginPelapak } from 'interfaces/authPelapak';
+import { AxiosWithToken } from './axios';
 
-export const ApiGetKeranjang = async (idGuest: string) => {
+export const ApiLoginPelapak = async (form: IFormLoginPelapak) => {
   const response = await axios
-    .get(`${BACKEND_URL}/guest/keranjang/find-all/${idGuest}`)
+    .post(`${BACKEND_URL}/pelapak/auth/login`, form)
     .then((response) => {
       return response;
     })
@@ -19,14 +20,12 @@ export const ApiGetKeranjang = async (idGuest: string) => {
   }
 };
 
-export const ApiAddProductToKeranjang = async (productId: string) => {
-  checkIsGuestIdExist();
-  const guestId = getLocal(GUEST_USER_ID_LOCAL_STORAGE);
-  console.log('productId', productId);
+export const ApiCheckLoginPelapak = async () => {
+  const token = getLocal(PELAPAK_TOKEN_LOCAL_STORAGE);
+
   const response = await axios
-    .post(`${BACKEND_URL}/guest/keranjang/add`, {
-      idGuest: guestId,
-      productId: productId,
+    .post(`${BACKEND_URL}/pelapak/auth/check-login`, {
+      token: token,
     })
     .then((response) => {
       return response;
@@ -41,9 +40,9 @@ export const ApiAddProductToKeranjang = async (productId: string) => {
   }
 };
 
-export const ApiDeleteProductFromKeranjang = async (idCart: string) => {
-  const response = await axios
-    .delete(`${BACKEND_URL}/guest/keranjang/delete/${idCart}`)
+export const ApiLogoutPelapak = async () => {
+  const response = await AxiosWithToken()
+    .get(`${BACKEND_URL}/pelapak/auth/logout`)
     .then((response) => {
       return response;
     })

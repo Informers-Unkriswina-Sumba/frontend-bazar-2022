@@ -1,11 +1,9 @@
 import axios from 'axios';
-import { BACKEND_URL, GUEST_USER_ID_LOCAL_STORAGE } from 'constant';
-import { getLocal } from 'helper/localStorage';
-import { checkIsGuestIdExist } from 'helper/user';
+import { BACKEND_URL } from 'constant';
 
-export const ApiGetKeranjang = async (idGuest: string) => {
+export const ApiGetListLapak = async () => {
   const response = await axios
-    .get(`${BACKEND_URL}/guest/keranjang/find-all/${idGuest}`)
+    .get(`${BACKEND_URL}/shared/lapak/list`)
     .then((response) => {
       return response;
     })
@@ -19,15 +17,9 @@ export const ApiGetKeranjang = async (idGuest: string) => {
   }
 };
 
-export const ApiAddProductToKeranjang = async (productId: string) => {
-  checkIsGuestIdExist();
-  const guestId = getLocal(GUEST_USER_ID_LOCAL_STORAGE);
-  console.log('productId', productId);
+export const ApiGetLapakDetailBySlugName = async (slugName: string) => {
   const response = await axios
-    .post(`${BACKEND_URL}/guest/keranjang/add`, {
-      idGuest: guestId,
-      productId: productId,
-    })
+    .get(`${BACKEND_URL}/shared/lapak/slug-name/${slugName}`)
     .then((response) => {
       return response;
     })
@@ -41,9 +33,25 @@ export const ApiAddProductToKeranjang = async (productId: string) => {
   }
 };
 
-export const ApiDeleteProductFromKeranjang = async (idCart: string) => {
+export const ApiGetListProdukByLapak = async (lapakId: string) => {
   const response = await axios
-    .delete(`${BACKEND_URL}/guest/keranjang/delete/${idCart}`)
+    .get(`${BACKEND_URL}/shared/product/lapak/${lapakId}`)
+    .then((response) => {
+      return response;
+    })
+    .catch((error) => {
+      return error.response;
+    });
+  if (response) {
+    return response;
+  } else {
+    // return window.location.replace('/500');
+  }
+};
+
+export const ApiGetDetailProdukById = async (productId: string) => {
+  const response = await axios
+    .get(`${BACKEND_URL}/shared/product/detail/${productId}`)
     .then((response) => {
       return response;
     })
