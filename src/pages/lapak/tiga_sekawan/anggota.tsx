@@ -2,7 +2,7 @@ import { Box, Heading } from '@chakra-ui/layout';
 import LayoutMainApp from 'components/Layout/LayoutMainApp';
 import ProdukItem from 'components/ProdukItem';
 import { APP_TITLE, LIST_LAPAK_DATA } from 'constant';
-import { DATA_ANGGOTA_KELOMPOK } from 'constant/kelompok-2';
+import { DATA_ANGGOTA_KELOMPOK } from 'constant/kelompok-9';
 import type { NextPage } from 'next';
 import AnggotaItem from 'components/AnggotaItem';
 import Head from 'next/head';
