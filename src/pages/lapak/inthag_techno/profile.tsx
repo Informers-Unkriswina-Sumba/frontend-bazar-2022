@@ -47,7 +47,7 @@ const Profile: NextPage = () => {
         </title>
         <link rel='icon' href='/favicon.ico' />
       </Head>
-      <Box>
+      <Box minH='100vh' mb='20'>
         {loadingGetLapak || !lapak ? (
           <Spinner />
         ) : (
@@ -63,35 +63,41 @@ const Profile: NextPage = () => {
                 h={{ base: '100%', sm: '400px', lg: '500px' }}
               />
             </Flex>
-            <Stack spacing={{ base: 6, md: 10 }}>
-              <Box as={'header'}>
-                <Heading
-                  lineHeight={1.1}
-                  fontWeight={600}
-                  fontSize={{ base: '2xl', sm: '4xl', lg: '5xl' }}
-                >
-                  {lapak.namaLapak}
-                </Heading>
-                <Text color='gray.900' fontWeight={300} fontSize={'2xl'}>
-                  {lapak.namaKelompok}
-                </Text>
-              </Box>
+            <Box px='15' mt='15'>
+              <Stack spacing={{ base: 6, md: 10 }}>
+                <Box as={'header'}>
+                  <Heading
+                    lineHeight={1.1}
+                    fontWeight={600}
+                    fontSize={{ base: '2xl', sm: '4xl', lg: '5xl' }}
+                  >
+                    {lapak.namaLapak}
+                  </Heading>
+                  <Text color='gray.900' fontWeight={300} fontSize={'2xl'}>
+                    {lapak.namaKelompok}
+                  </Text>
+                </Box>
 
-              <Stack
-                spacing={{ base: 4, sm: 6 }}
-                direction={'column'}
-                divider={<StackDivider borderColor='gray.200' />}
-              >
-                <VStack spacing={{ base: 4, sm: 6 }}>
-                  <Text fontSize={'lg'}>{lapak.deskripsi}</Text>
-                </VStack>
+                <Stack
+                  spacing={{ base: 4, sm: 6 }}
+                  direction={'column'}
+                  divider={<StackDivider borderColor='gray.200' />}
+                >
+                  <VStack spacing={{ base: 4, sm: 6 }}>
+                    <Text fontSize={'lg'} whiteSpace='pre-wrap'>
+                      {lapak.deskripsi}
+                    </Text>
+                  </VStack>
+                </Stack>
               </Stack>
-            </Stack>
-            <Box>
-              <Link href={`/lapak/inthag_techno/anggota`}>
-                <Button>Lihat Anggota</Button>
-              </Link>
-              <RatingLapak lapakId={lapak._id} />
+              <Box mt='5'>
+                <Link href={`/lapak/inthag_techno/anggota`}>
+                  <Button bg='green.300' color='white' w='full'>
+                    Lihat Anggota
+                  </Button>
+                </Link>
+                <RatingLapak lapakId={lapak._id} />
+              </Box>
             </Box>
           </Box>
         )}

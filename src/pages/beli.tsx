@@ -13,7 +13,10 @@ import {
   Flex,
   FormControl,
   FormLabel,
+  Heading,
+  Image,
   Select,
+  Spinner,
   Text,
   useDisclosure,
 } from '@chakra-ui/react';
@@ -55,6 +58,7 @@ const Beli: NextPage = () => {
   });
   const [dataPembelianProduk, setDataPembelianProduk] = useState(DUMMY_PRODUCT);
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const [loadingPrintInvoice, setLoadingPrintInvoice] = useState(false);
 
   const onChangeFormDataPembeli = (e: any) => {
     setFormDataPembeli({
@@ -65,6 +69,7 @@ const Beli: NextPage = () => {
 
   const handleBayarCOD = async (e: any) => {
     onClose();
+    setLoadingPrintInvoice(true);
     checkIsGuestIdExist();
     const guestLgin = getLocal(GUEST_USER_ID_LOCAL_STORAGE);
     let produkWithQty = dataPembelianProduk.map((product) => {
@@ -84,6 +89,7 @@ const Beli: NextPage = () => {
     if (res.status === 200) {
       await ApiPrintInvoice(res.data.data._id);
     }
+    setLoadingPrintInvoice(false);
   };
 
   const addQty = (productId: string) => {
@@ -167,17 +173,38 @@ const Beli: NextPage = () => {
         <link rel='icon' href='/favicon.ico' />
       </Head>
       <Box padding='0 15px'>
-        Beli List ID Product: {listProductId}
+        <Heading mb='10'>Detail Pesanan</Heading>
         {dataPembelianProduk.map((product, index) => (
           <Box key={index}>
-            <Text>{product.name}</Text>
-            <Text>Rp. {product.harga}</Text>
-            <Flex>
-              <Button onClick={() => minQty(product.id)}>-</Button>
-              {product.harga * product.jumlahPembelian}
-              <Button onClick={() => addQty(product.id)}>+</Button>
+            <Flex key={index} w='full' gap='15px'>
+              <Image src={product.image} w='100px' h='100px' />
+              <Box>
+                <Text fontSize='16px' fontWeight='700'>
+                  {product.name}
+                </Text>
+                {/* <Text>{product.lapak}</Text> */}
+                <Box fontSize='2xl' color='gray.800'>
+                  <Box as='span' color={'gray.600'} fontSize='lg'>
+                    Rp.
+                  </Box>
+                  {product.harga}
+                </Box>
+              </Box>
             </Flex>
-            <Text>Jumlah Pembelian: {product.jumlahPembelian}</Text>
+            {/* <Text>{product.name}</Text>
+            <Text>Rp. {product.harga}</Text> */}
+            <Flex mt='5' gap='5px'>
+              <Button size='xs' onClick={() => minQty(product.id)}>
+                -
+              </Button>
+              {product.jumlahPembelian}
+              <Button size='xs' onClick={() => addQty(product.id)}>
+                +
+              </Button>
+            </Flex>
+            <Text mt='2'>
+              Jumlah: Rp.{product.harga * product.jumlahPembelian}
+            </Text>
             <Divider my='3' />
           </Box>
         ))}
@@ -205,9 +232,8 @@ const Beli: NextPage = () => {
               placeholder='Pilih Tipe'
               onChange={onChangeFormDataPembeli}
             >
-              <option value='1'>Masyarakat Umum</option>
-              <option value='2'>Mahasiswa</option>
-              <option value='3'>Civitas Akedemi</option>
+              <option value='Civitas Akedemi'>Civitas Akedemi</option>
+              <option value='Non Civitas Akedemi'>Non Civitas Akedemi</option>
             </Select>
           </FormControl>
           <Flex mt='8' gap='10px'>
@@ -215,12 +241,15 @@ const Beli: NextPage = () => {
               disabled={!formDataPembeli.nama || !formDataPembeli.type}
               onClick={onOpen}
               type='submit'
+              w='full'
+              bgColor='green.300'
+              color='white'
             >
               Bayar COD
             </Button>
-            <Button disabled={!formDataPembeli.nama || !formDataPembeli.type}>
+            {/* <Button disabled={!formDataPembeli.nama || !formDataPembeli.type}>
               Pesan Via Whatsapp
-            </Button>
+            </Button> */}
           </Flex>
           {/* </form> */}
         </Box>
@@ -239,6 +268,12 @@ const Beli: NextPage = () => {
               Ya, lanjutkan
             </Button>
           </ModalFooter>
+        </ModalContent>
+      </Modal>
+      <Modal isOpen={loadingPrintInvoice} size='xs' onClose={() => undefined}>
+        <ModalOverlay />
+        <ModalContent>
+          <Spinner />
         </ModalContent>
       </Modal>
     </LayoutMainApp>

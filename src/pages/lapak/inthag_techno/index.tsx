@@ -1,4 +1,4 @@
-import { Box } from '@chakra-ui/layout';
+import { Box, Heading } from '@chakra-ui/layout';
 import { Skeleton } from '@chakra-ui/skeleton';
 import { Spinner } from '@chakra-ui/spinner';
 import {
@@ -64,20 +64,23 @@ const Kenangan: NextPage = () => {
           />
         )}
       </Box>
-      <Box>
+      <Box px='15' mt='10'>
         {loadingGetListProduct ? (
           <Spinner />
         ) : (
-          listProduct.map((product, index) => (
-            <ProdukItem
-              image={product.gambar[0]}
-              productName={product.nama}
-              harga={product.harga}
-              link={`/lapak/inthag_techno/produk/${product._id}`}
-              key={index}
-              id={product._id}
-            />
-          ))
+          <>
+            <Heading>Daftar Produk</Heading>
+            {listProduct.map((product, index) => (
+              <ProdukItem
+                image={product.gambar[0]}
+                productName={product.nama}
+                harga={product.harga}
+                link={`/lapak/inthag_techno/produk/${product._id}`}
+                key={index}
+                id={product._id}
+              />
+            ))}
+          </>
         )}
       </Box>
     </LayoutMainApp>

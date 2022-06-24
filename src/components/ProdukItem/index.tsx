@@ -124,7 +124,9 @@ const ProdukItem: React.FC<IProps> = (props): ReactElement => {
         </Box>
       </Box>
       <Link href={props.link}>
-        <Button w='full'>Detail</Button>
+        <Button bg='green.300' color='white' w='full'>
+          Detail
+        </Button>
       </Link>
     </Flex>
   );

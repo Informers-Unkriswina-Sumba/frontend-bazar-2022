@@ -1,22 +1,29 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FormLabel } from '@chakra-ui/form-control';
 import { Button } from '@chakra-ui/button';
 // import Icon from '@chakra-ui/icon';
 import { Box, Stack, Text } from '@chakra-ui/layout';
 import { Textarea } from '@chakra-ui/textarea';
-import { Icon } from '@chakra-ui/react';
+import { createStandaloneToast, Icon } from '@chakra-ui/react';
 import { AiFillStar } from 'react-icons/ai';
+import {
+  ApiCreatePenilaianLapak,
+  ApiGetPenilaianLapakByGuestAndLapakId,
+} from 'api/penilaianLapak';
+import { checkIsGuestIdExist } from 'helper/user';
+import { getLocal } from 'helper/localStorage';
+import { GUEST_USER_ID_LOCAL_STORAGE } from 'constant';
 
 const size = 50;
-const icon = 'star';
 const scale = 5;
-const fillColor = 'gold';
-const strokeColor = 'grey';
 
 const RatingLapak = React.forwardRef((props: any, ref: any) => {
   console.log('props', props);
   const [rating, setRating] = useState(0);
+  const [loadingCreatePenilaian, setLoadingCreatePenilaian] = useState(false);
+  const [penilaian, setPenilaian] = useState<any>();
   const [message, setMessage] = useState('');
+  const toast = createStandaloneToast();
 
   const buttons = [];
 
@@ -72,29 +79,80 @@ const RatingLapak = React.forwardRef((props: any, ref: any) => {
     setMessage(e.target.value);
   };
 
-  const handleClickRating = () => {};
+  const handleClickRating = async () => {
+    checkIsGuestIdExist();
+    const guestId = getLocal(GUEST_USER_ID_LOCAL_STORAGE);
+    setLoadingCreatePenilaian(true);
+    const res = await ApiCreatePenilaianLapak({
+      guestId: guestId,
+      lapakId: props.lapakId,
+      rating: rating,
+      description: message,
+    });
+    if (res.status === 200) {
+      setPenilaian(res.data.data);
+      toast.toast({
+        status: 'success',
+        description: 'Berhasil menilai lapak',
+        title: 'Berhasil',
+        duration: 5000,
+      });
+    }
+    setLoadingCreatePenilaian(false);
+  };
+
+  const checkIsPenilainExist = async () => {
+    const res = await ApiGetPenilaianLapakByGuestAndLapakId(props.lapakId);
+    if (res.status === 200) {
+      setPenilaian(res.data.data);
+    }
+  };
+
+  useEffect(() => {
+    checkIsPenilainExist();
+  }, []);
 
   return (
     <Box mt={8}>
-      <input name='rating' type='hidden' value={rating} ref={ref} />
-      {buttons}
-      <Box width={`${size * 1.5}px`} textAlign='center'>
-        <Text fontSize='sm' textTransform='uppercase'>
-          Rating
-        </Text>
-        <Text fontSize='2xl' fontWeight='semibold' lineHeight='1.2em'>
-          {rating}
-        </Text>
-      </Box>
-      <FormLabel>Tanggapan</FormLabel>
-      <Textarea
-        value={message}
-        onChange={onChangeMessage}
-        placeholder='Tanggapanmu'
-      />
-      <Button disabled={rating === 0 || !message} onClick={handleClickRating}>
-        Kirim
-      </Button>
+      {penilaian ? (
+        <Box>
+          <Text fontSize='20px' fontWeight='700'>
+            Penilaian
+          </Text>
+          <Text>Rating: {penilaian.rating} bintang</Text>
+          <Text>Pesan: {penilaian.description}</Text>
+          <Text>Dibuat pada: {penilaian.createdAt}</Text>
+        </Box>
+      ) : (
+        <>
+          <input name='rating' type='hidden' value={rating} ref={ref} />
+          {buttons}
+          <Box width={`${size * 1.5}px`} textAlign='center'>
+            <Text fontSize='sm' textTransform='uppercase'>
+              Rating
+            </Text>
+            <Text fontSize='2xl' fontWeight='semibold' lineHeight='1.2em'>
+              {rating}
+            </Text>
+          </Box>
+          <FormLabel mt='5'>Tanggapan</FormLabel>
+          <Textarea
+            value={message}
+            onChange={onChangeMessage}
+            placeholder='Tanggapanmu'
+          />
+          <Button
+            mt='5'
+            bgColor='green.500'
+            color='white'
+            disabled={rating === 0 || !message || loadingCreatePenilaian}
+            onClick={handleClickRating}
+            isLoading={loadingCreatePenilaian}
+          >
+            Kirim
+          </Button>
+        </>
+      )}
     </Box>
   );
 });

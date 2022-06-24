@@ -113,7 +113,7 @@ const Produk: NextPage = () => {
                 h={{ base: '100%', sm: '400px', lg: '500px' }}
               />
             </Flex>
-            <Stack spacing={{ base: 6, md: 10 }}>
+            <Stack spacing={{ base: 6, md: 4 }}>
               <Box as={'header'}>
                 <Heading
                   lineHeight={1.1}
@@ -127,20 +127,11 @@ const Produk: NextPage = () => {
                 </Text>
               </Box>
               <Stack
-                spacing={{ base: 4, sm: 6 }}
+                // spacing={{ base: 2, sm: 2 }}
                 direction={'column'}
                 divider={<StackDivider borderColor='gray.600' />}
               >
                 <Box>
-                  <Text
-                    fontSize={{ base: '16px', lg: '18px' }}
-                    color='yellow.300'
-                    fontWeight={'500'}
-                    textTransform={'uppercase'}
-                    mb={'4'}
-                  >
-                    Info Lainnya
-                  </Text>
                   <List spacing={2}>
                     {produk.satuan && (
                       <ListItem>
@@ -161,6 +152,15 @@ const Produk: NextPage = () => {
                   </List>
                 </Box>
               </Stack>
+              <Text
+                fontSize={{ base: '16px', lg: '18px' }}
+                color='yellow.300'
+                fontWeight={'500'}
+                textTransform={'uppercase'}
+                // mb={'4'}
+              >
+                Info Produk
+              </Text>
               <Box>
                 <div dangerouslySetInnerHTML={{ __html: produk.deskripsi }} />
               </Box>
@@ -170,8 +170,8 @@ const Produk: NextPage = () => {
                 mt={8}
                 size={'lg'}
                 py={'7'}
-                bg='green.50'
-                color='green.900'
+                bg='green.400'
+                color='white'
                 textTransform={'uppercase'}
                 _hover={{
                   transform: 'translateY(2px)',
@@ -184,11 +184,9 @@ const Produk: NextPage = () => {
               <Button
                 rounded={'none'}
                 w={'full'}
-                mt={8}
                 size={'lg'}
-                py={'7'}
-                bg='blue.50'
-                color='blue.900'
+                bg='blue.400'
+                color='white'
                 textTransform={'uppercase'}
                 _hover={{
                   transform: 'translateY(2px)',

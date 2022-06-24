@@ -1,4 +1,4 @@
-import { Box } from '@chakra-ui/layout';
+import { Box, Heading } from '@chakra-ui/layout';
 import LayoutMainApp from 'components/Layout/LayoutMainApp';
 import ProdukItem from 'components/ProdukItem';
 import { APP_TITLE, LIST_LAPAK_DATA } from 'constant';
@@ -17,7 +17,10 @@ const Kelompok: NextPage = () => {
         </title>
         <link rel='icon' href='/favicon.ico' />
       </Head>
-      <Box>
+      <Box px='15' mt='10' mb='20'>
+        <Heading fontSize='25px' textAlign='center'>
+          Anggota Lapak {LIST_LAPAK_DATA.KELOMPOK_4.namaLapak}
+        </Heading>
         {DATA_ANGGOTA_KELOMPOK_4.map((anggota, index) => (
           <AnggotaItem
             gambar=''

@@ -67,7 +67,7 @@ export const ApiGetDetailProdukById = async (productId: string) => {
 
 export const ApiGetLapakById = async (id: string) => {
   const response = await axios
-    .get(`${BACKEND_URL}/shared/lapak/detail/${id}`)
+    .get(`${BACKEND_URL}/shared/lapak/lapak-id/${id}`)
     .then((response) => {
       return response;
     })

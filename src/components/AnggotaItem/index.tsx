@@ -3,13 +3,22 @@ import {
   Box,
   Button,
   Center,
+  createStandaloneToast,
   Flex,
   Heading,
   IconButton,
+  Spinner,
   Stack,
   Text,
 } from '@chakra-ui/react';
-import { ReactElement, useState } from 'react';
+import {
+  ApiCreatePenilaianAnggota,
+  ApiGetPenilaianAnggotaByGuestAndNim,
+} from 'api/penilaianAnggota';
+import { GUEST_USER_ID_LOCAL_STORAGE } from 'constant';
+import { getLocal } from 'helper/localStorage';
+import { checkIsGuestIdExist } from 'helper/user';
+import { ReactElement, useEffect, useState } from 'react';
 import { BsFacebook, BsInstagram, BsTwitter } from 'react-icons/bs';
 
 interface IProps {
@@ -21,6 +30,10 @@ interface IProps {
 
 const AnggotaItem: React.FC<IProps> = (props): ReactElement => {
   const [openNilai, setOpenNilai] = useState(false);
+  const [penilaian, setPenilaian] = useState<any>();
+  const [loadingCreatePenilaian, setLoadingCreatePenilaian] = useState(false);
+  const toast = createStandaloneToast();
+
   const gotoNewTab = (link: string) => {
     if (window) {
       window.open(
@@ -30,9 +43,25 @@ const AnggotaItem: React.FC<IProps> = (props): ReactElement => {
     }
   };
 
-  const handleNilaiSiswa = (type: string) => {
-    console.log(type);
-    console.log(props.nim);
+  const handleNilaiSiswa = async (type: string) => {
+    setLoadingCreatePenilaian(true);
+    checkIsGuestIdExist();
+    const guestId = getLocal(GUEST_USER_ID_LOCAL_STORAGE);
+    const res = await ApiCreatePenilaianAnggota({
+      guestId: guestId,
+      nim: props.nim,
+      description: type,
+    });
+    if (res.status === 200) {
+      toast.toast({
+        status: 'success',
+        description: 'Berhasil nilai anggota',
+        title: 'Berhasil',
+        duration: 5000,
+      });
+      setPenilaian(res.data.data);
+    }
+    setLoadingCreatePenilaian(false);
   };
 
   const renderSosmed = (sosmed: any, index: number) => {
@@ -81,15 +110,26 @@ const AnggotaItem: React.FC<IProps> = (props): ReactElement => {
     }
   };
 
+  const checkIsPenilainExist = async () => {
+    const res = await ApiGetPenilaianAnggotaByGuestAndNim(props.nim);
+    if (res.status === 200) {
+      setPenilaian(res.data.data);
+    }
+  };
+
+  useEffect(() => {
+    checkIsPenilainExist();
+  }, []);
+
   return (
     <Center py={3}>
       <Box
-        maxW={'320px'}
+        maxW={'400px'}
         w={'full'}
         bg='white'
         boxShadow={'2xl'}
         rounded={'lg'}
-        p={6}
+        p={2}
         textAlign={'center'}
       >
         {/* <Avatar
@@ -110,7 +150,7 @@ const AnggotaItem: React.FC<IProps> = (props): ReactElement => {
             right: 3,
           }}
         /> */}
-        <Heading fontSize={'2xl'} fontFamily={'body'}>
+        <Heading fontSize={'1xl'} fontFamily={'body'}>
           {props.namaAnggota}
         </Heading>
 
@@ -120,7 +160,7 @@ const AnggotaItem: React.FC<IProps> = (props): ReactElement => {
           })}
         </Stack>
 
-        <Stack mt={8} direction={'row'} spacing={4}>
+        <Stack mt={4} direction={'row'} spacing={4}>
           <Button
             flex={1}
             fontSize={'sm'}
@@ -142,37 +182,58 @@ const AnggotaItem: React.FC<IProps> = (props): ReactElement => {
           </Button>
         </Stack>
         {openNilai && (
-          <Flex alignItems='center' gap='10px'>
-            <Box>
-              <Button
-                onClick={() => handleNilaiSiswa('Sangat Menyenangkan')}
-                fontSize='25px'
-              >
-                🤩
-              </Button>
-              <Text>Sangat Menyenangkan</Text>
-            </Box>
-            <Box>
-              <Button onClick={() => handleNilaiSiswa('Asik')} fontSize='25px'>
-                😃
-              </Button>
-              <Text>Asik</Text>
-            </Box>
-            <Box>
-              <Button onClick={() => handleNilaiSiswa('Cukup')} fontSize='25px'>
-                🙂
-              </Button>
-              <Text>Cukup</Text>
-            </Box>
-            <Box>
-              <Button
-                onClick={() => handleNilaiSiswa('Tidak Menyenangkan')}
-                fontSize='25px'
-              >
-                😭
-              </Button>
-              <Text>Tidak Menyenangkan</Text>
-            </Box>
+          <Flex mt='4' alignItems='center' gap='5px'>
+            {loadingCreatePenilaian ? (
+              <Spinner />
+            ) : penilaian ? (
+              <Box>
+                <Text>Perasaan: {penilaian.description}</Text>
+                <Text>Dibuat pada: {penilaian.createdAt}</Text>
+              </Box>
+            ) : (
+              <>
+                <Box>
+                  <Button
+                    onClick={() => handleNilaiSiswa('Sangat Menyenangkan')}
+                    fontSize='20px'
+                    padding='0'
+                  >
+                    🤩
+                  </Button>
+                  <Text fontSize='12px'>Sangat Menyenangkan</Text>
+                </Box>
+                <Box>
+                  <Button
+                    onClick={() => handleNilaiSiswa('Asik')}
+                    fontSize='20px'
+                    padding='0'
+                  >
+                    😃
+                  </Button>
+                  <Text fontSize='12px'>Asik</Text>
+                </Box>
+                <Box>
+                  <Button
+                    onClick={() => handleNilaiSiswa('Cukup')}
+                    fontSize='20px'
+                    padding='0'
+                  >
+                    🙂
+                  </Button>
+                  <Text fontSize='12px'>Cukup</Text>
+                </Box>
+                <Box>
+                  <Button
+                    onClick={() => handleNilaiSiswa('Tidak Menyenangkan')}
+                    fontSize='20px'
+                    padding='0'
+                  >
+                    😭
+                  </Button>
+                  <Text fontSize='12px'>Tidak Menyenangkan</Text>
+                </Box>
+              </>
+            )}
           </Flex>
         )}
       </Box>
