@@ -101,4 +101,9 @@ export const DATA_ANGGOTA_KELOMPOK: IAnggotaKelompok[] = [
     nama: 'SUSANTI TAMAR PANGAMBANG',
     sosialMedia: [],
   },
+  {
+    nim: '2119114',
+    nama: 'Enjelita Pati Ndamung',
+    sosialMedia: [],
+  },
 ];
