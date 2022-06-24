@@ -154,17 +154,19 @@ const AnggotaItem: React.FC<IProps> = (props): ReactElement => {
           {props.namaAnggota}
         </Heading>
 
-        <Stack align={'center'} justify={'center'} direction={'row'} mt={6}>
+        {/* <Stack align={'center'} justify={'center'} direction={'row'} mt={6}>
           {props.sosialMedia.map((sosmed, index) => {
             return renderSosmed(sosmed, index);
           })}
-        </Stack>
+        </Stack> */}
 
         <Stack mt={4} direction={'row'} spacing={4}>
           <Button
             flex={1}
             fontSize={'sm'}
             rounded={'full'}
+            size='sm'
+            my='6'
             bg={'blue.400'}
             color={'white'}
             boxShadow={

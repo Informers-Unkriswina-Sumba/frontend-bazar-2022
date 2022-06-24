@@ -60,7 +60,7 @@ const Kenangan: NextPage = () => {
             image={lapak?.logo}
             namaLapak={lapak.namaLapak}
             namaKelompok={lapak.namaKelompok}
-            linkProfile={`/lapak/inthag_techno/profile`}
+            linkProfile={`/lapak/${LIST_LAPAK_DATA.KELOMPOK_4.slugName}/profile`}
           />
         )}
       </Box>

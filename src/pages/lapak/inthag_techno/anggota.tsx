@@ -2,7 +2,7 @@ import { Box, Heading } from '@chakra-ui/layout';
 import LayoutMainApp from 'components/Layout/LayoutMainApp';
 import ProdukItem from 'components/ProdukItem';
 import { APP_TITLE, LIST_LAPAK_DATA } from 'constant';
-import { DATA_ANGGOTA_KELOMPOK_4 } from 'constant/kelompok-4';
+import { DATA_ANGGOTA_KELOMPOK } from 'constant/kelompok-4';
 import type { NextPage } from 'next';
 import AnggotaItem from 'components/AnggotaItem';
 import Head from 'next/head';
@@ -21,7 +21,7 @@ const Kelompok: NextPage = () => {
         <Heading fontSize='25px' textAlign='center'>
           Anggota Lapak {LIST_LAPAK_DATA.KELOMPOK_4.namaLapak}
         </Heading>
-        {DATA_ANGGOTA_KELOMPOK_4.map((anggota, index) => (
+        {DATA_ANGGOTA_KELOMPOK.map((anggota, index) => (
           <AnggotaItem
             gambar=''
             namaAnggota={anggota.nama}

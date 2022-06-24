@@ -5,4 +5,6 @@ export interface IAnggotaKelompok {
     type: string;
     link: string;
   }[];
+  nomorhp?: string;
+  kelas?: string;
 }

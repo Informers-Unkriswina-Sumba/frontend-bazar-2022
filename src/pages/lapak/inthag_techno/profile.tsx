@@ -91,7 +91,9 @@ const Profile: NextPage = () => {
                 </Stack>
               </Stack>
               <Box mt='5'>
-                <Link href={`/lapak/inthag_techno/anggota`}>
+                <Link
+                  href={`/lapak/${LIST_LAPAK_DATA.KELOMPOK_4.slugName}/anggota`}
+                >
                   <Button bg='green.300' color='white' w='full'>
                     Lihat Anggota
                   </Button>

@@ -1,6 +1,6 @@
 import { IAnggotaKelompok } from 'interfaces/anggota';
 
-export const DATA_ANGGOTA_KELOMPOK_4: IAnggotaKelompok[] = [
+export const DATA_ANGGOTA_KELOMPOK: IAnggotaKelompok[] = [
   {
     nama: 'NOBERTO DJAMI NULI',
     nim: '2119038',
