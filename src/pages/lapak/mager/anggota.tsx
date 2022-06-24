@@ -27,6 +27,7 @@ const Kelompok: NextPage = () => {
             namaAnggota={anggota.nama}
             sosialMedia={anggota.sosialMedia}
             nim={anggota.nim}
+            key={index}
           />
         ))}
       </Box>

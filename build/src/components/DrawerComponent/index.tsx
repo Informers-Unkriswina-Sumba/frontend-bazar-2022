@@ -72,7 +72,8 @@ const DrawerComponent: React.FC<IProps> = (): ReactElement => {
               fontWeight='extrabold'
               textAlign='right'
             >
-              This Website Develop By: Tim Programming Techoprenuer
+              &copy; Copyright {new Date().getFullYear()} by unwinapreneur. All
+              Rights Reserved.
             </Text>
           </DrawerFooter>
         </DrawerContent>

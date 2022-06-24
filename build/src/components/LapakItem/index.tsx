@@ -33,6 +33,10 @@ const LapakItem: React.FC<IProps> = (props): ReactElement => {
         base: '320px',
         md: '445px',
       }}
+      minW={{
+        base: '320px',
+        md: '445px',
+      }}
       w={{
         base: '320px',
         md: 'full',
@@ -72,7 +76,7 @@ const LapakItem: React.FC<IProps> = (props): ReactElement => {
           >
             {props.lapakName}
           </Heading>
-          <Text color={'gray.500'}>{props.description}</Text>
+          <Text color={'gray.500'}>{props.description.slice(0, 250)}...</Text>
         </Stack>
 
         <Link href={props.link}>

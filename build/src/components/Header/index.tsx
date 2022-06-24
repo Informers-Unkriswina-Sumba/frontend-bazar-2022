@@ -50,10 +50,10 @@ const Header: React.FC<IProps> = (): ReactElement => {
         </Link>
         <Flex direction='column' align='center'>
           <Text fontSize='md' fontWeight='bold'>
-            Bazar Unkriswina 2022
+            enTECHNOpreneurship FAIR 2022
           </Text>
           <Text fontSize='sm' fontWeight='medium' align='center'>
-            By: Techonoprenuership
+            By: TIF- AGB- THP
           </Text>
         </Flex>
         <Flex align='center' justify='space-between' direction='row'>

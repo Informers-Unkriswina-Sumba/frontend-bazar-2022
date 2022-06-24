@@ -215,7 +215,9 @@ const Beli: NextPage = () => {
           <FormControl isRequired>
             <FormLabel>Nama</FormLabel>
             <InputGroup>
-              <InputLeftElement children={<BsPerson />} />
+              <InputLeftElement>
+                <BsPerson />
+              </InputLeftElement>
               <Input
                 type='text'
                 name='nama'

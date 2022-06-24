@@ -24,6 +24,7 @@ const Kelompok: NextPage = () => {
         {DATA_ANGGOTA_KELOMPOK.map((anggota, index) => (
           <AnggotaItem
             gambar=''
+            key={index}
             namaAnggota={anggota.nama}
             sosialMedia={anggota.sosialMedia}
             nim={anggota.nim}
