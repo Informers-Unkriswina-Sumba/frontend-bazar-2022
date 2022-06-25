@@ -14,7 +14,7 @@ const NavigationUpToMainApp: React.FC<IProps> = (): ReactElement => {
   return (
     <Box position='fixed' bottom='20px' right='15px'>
       <Button
-        backgroundColor='#44A68F'
+        backgroundColor='blue.400'
         onClick={gotoMainView}
         color='white'
         leftIcon={<FaCartPlus size={36} fill='white' />}
