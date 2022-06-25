@@ -13,10 +13,9 @@ import '../styles/globals.css';
 import '../styles/normalize.css';
 import '../styles/suitcss-base.css';
 import { store } from 'provider/redux/store';
-import { getLocal } from 'helper/localStorage';
+import { getLocal, setLocal } from 'helper/localStorage';
 import { PELAPAK_TOKEN_LOCAL_STORAGE } from 'constant';
 import { ApiCheckLoginPelapak } from 'api/pelapak';
-import { setLocal } from '../../build/src/helper/localStorage';
 
 export interface AppRenderProps {
   pageProps: object;
