@@ -1,3 +1,5 @@
+import { Image } from '@chakra-ui/image';
+import { Box } from '@chakra-ui/layout';
 import { Skeleton } from '@chakra-ui/skeleton';
 import Layout from 'components/Layout';
 import type { NextPage } from 'next';
@@ -32,7 +34,22 @@ const Home: NextPage = () => {
         <title>Kelas Unkriswina</title>
         <link rel='icon' href='/favicon.ico' /> */}
       </Head>
-      <Skeleton height='100px' />
+      <Box
+        px='4'
+        bgColor='#44A68F'
+        display='flex'
+        justifyContent='center'
+        flexDirection='column'
+      >
+        <Image alt='Prosper Otemuyiwa' src='/images/info.jpeg' my='4' />
+
+        <Image
+          my='8'
+          alt='Prosper Otemuyiwa'
+          src='/images/Site-Logo-Unkriswina-Putih-wp.png'
+        />
+        <Image my='4' alt='Prosper Otemuyiwa' src='/images/Logo-dies-25.png' />
+      </Box>
     </Layout>
   );
 };

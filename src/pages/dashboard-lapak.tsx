@@ -105,6 +105,7 @@ const DashboardLapak: NextPage = () => {
             ) : (
               listInvoice.map((invoice, index) => (
                 <InvoiceItem
+                  key={index}
                   invoiceNumber={invoice.invoiceNumber}
                   status={invoice.status}
                   index={index}
