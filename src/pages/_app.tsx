@@ -13,6 +13,10 @@ import '../styles/globals.css';
 import '../styles/normalize.css';
 import '../styles/suitcss-base.css';
 import { store } from 'provider/redux/store';
+import { getLocal } from 'helper/localStorage';
+import { PELAPAK_TOKEN_LOCAL_STORAGE } from 'constant';
+import { ApiCheckLoginPelapak } from 'api/pelapak';
+import { setLocal } from '../../build/src/helper/localStorage';
 
 export interface AppRenderProps {
   pageProps: object;
@@ -37,6 +41,21 @@ const GlobalStyles = css`
 `;
 
 export default function App({ Component, pageProps }: AppProps) {
+  const getPelapak = async () => {
+    const res = await ApiCheckLoginPelapak();
+    console.log('res', res);
+    if (res.status === 200) {
+      store.dispatch({ type: 'SET_PELAPAK', pelapak: res.data.data });
+      setLocal(PELAPAK_TOKEN_LOCAL_STORAGE, res.data.data.token);
+    }
+  };
+
+  useEffect(() => {
+    if (!store.getState().pelapak.pelapak) {
+      getPelapak();
+    }
+  }, []);
+
   useEffect(() => {
     checkIsGuestIdExist();
   }, []);

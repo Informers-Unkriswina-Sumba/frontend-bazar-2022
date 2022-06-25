@@ -5,13 +5,16 @@ import {
   IKeranjangState,
   keranjangReducer,
 } from './Keranjang/KeranjangReducer';
+import { pelapakReducer, IPelapakState } from './Pelapak/PelapakReducer';
 
 export interface ICombinedState {
   keranjang: IKeranjangState;
+  pelapak: IPelapakState;
 }
 
 const appReducer = combineReducers({
   keranjang: keranjangReducer,
+  pelapak: pelapakReducer,
 });
 
 const middleware = [thunk];

@@ -55,3 +55,41 @@ export const ApiLogoutPelapak = async () => {
     // return window.location.replace('/500');
   }
 };
+
+export const ApiGetListInvoice = async (lapakId: string) => {
+  const response = await AxiosWithToken()
+    .get(`${BACKEND_URL}/pelapak/invoice/list/${lapakId}`)
+    .then((response) => {
+      return response;
+    })
+    .catch((error) => {
+      return error.response;
+    });
+  if (response) {
+    return response;
+  } else {
+    // return window.location.replace('/500');
+  }
+};
+
+export const ApiUpdateStatusInvoice = async (
+  invoiceId: string,
+  status: string
+) => {
+  const response = await AxiosWithToken()
+    .post(`${BACKEND_URL}/pelapak/invoice/update-status`, {
+      inovoiceId: invoiceId,
+      status: status,
+    })
+    .then((response) => {
+      return response;
+    })
+    .catch((error) => {
+      return error.response;
+    });
+  if (response) {
+    return response;
+  } else {
+    // return window.location.replace('/500');
+  }
+};
