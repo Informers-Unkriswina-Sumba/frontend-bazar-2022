@@ -11,11 +11,13 @@ import { APP_TITLE } from 'constant';
 import { findIndex } from 'lodash';
 import type { NextPage } from 'next';
 import Head from 'next/head';
+import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { actionGetKeranjang } from 'provider/redux/Keranjang/KeranjangAction';
 import { IKeranjangState } from 'provider/redux/Keranjang/KeranjangReducer';
 import { ICombinedState } from 'provider/redux/store';
 import { useEffect, useState } from 'react';
+import { FaCartPlus } from 'react-icons/fa';
 import { useDispatch, useSelector } from 'react-redux';
 
 interface IReduxStateWorkspace {
@@ -79,6 +81,7 @@ const Keranjang: NextPage = () => {
             gambar: res.data.data.gambar[0],
             nama: res.data.data.nama,
             harga: res.data.data.harga,
+            keranjangId: id._id,
             id: res.data.data._id,
             lapak: {
               id: lapak.data.data._id,
@@ -161,10 +164,26 @@ const Keranjang: NextPage = () => {
         <title>{APP_TITLE}</title>
         <link rel='icon' href='/favicon.ico' />
       </Head>
-      <Box px='15'>
+      <Box px='15' py='10'>
         <Heading>Keranjang</Heading>
         {loadingGetListProduct ? (
           <Spinner />
+        ) : listProduct.length === 0 ? (
+          <Box my='6'>
+            <Text fontSize='large' fontWeight='800' textAlign='center' mb='4'>
+              Keranjang Kamu Kosong
+            </Text>
+            <Link href='/lapak'>
+              <Button
+                w='full'
+                bgColor='green.300'
+                color='white'
+                rightIcon={<FaCartPlus size={36} fill='white' />}
+              >
+                Cusss gas belanja kuyy
+              </Button>
+            </Link>
+          </Box>
         ) : (
           listProduct.map((product, index) => (
             <KeranjangItem
@@ -173,19 +192,22 @@ const Keranjang: NextPage = () => {
               handleChangeCheckbox={handleChangeCheckbox}
               handleHapus={handleHapus}
               key={index}
+              keranjangId={product.keranjangId}
             />
           ))
         )}
-        <Button
-          disabled={listProductToBuy.length === 0 ? true : false}
-          onClick={handleBeli}
-          w='full'
-          mt='10'
-          bgColor='green.400'
-          color='white'
-        >
-          Beli
-        </Button>
+        {listProduct.length !== 0 && (
+          <Button
+            disabled={listProductToBuy.length === 0 ? true : false}
+            onClick={handleBeli}
+            w='full'
+            mt='10'
+            bgColor='green.400'
+            color='white'
+          >
+            Beli
+          </Button>
+        )}
       </Box>
     </LayoutMainApp>
   );
@@ -198,6 +220,7 @@ interface IPropsKeranjangItem {
   product: any;
   handleChangeCheckbox: (e: any) => boolean;
   handleHapus: (id: string) => Promise<void>;
+  keranjangId: string;
 }
 
 const KeranjangItem: React.FC<IPropsKeranjangItem> = (props) => {
@@ -234,7 +257,7 @@ const KeranjangItem: React.FC<IPropsKeranjangItem> = (props) => {
           color='white'
           size='sm'
           mt='4'
-          onClick={() => props.handleHapus(props.product.id)}
+          onClick={() => props.handleHapus(props.keranjangId)}
         >
           Hapus
         </Button>

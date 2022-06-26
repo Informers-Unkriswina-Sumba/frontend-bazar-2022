@@ -19,7 +19,7 @@ const NavigationUpToMainApp: React.FC<IProps> = (): ReactElement => {
         color='white'
         leftIcon={<FaCartPlus size={36} fill='white' />}
       >
-        Mulai Berlanja
+        Mulai Belanja
       </Button>
     </Box>
   );
