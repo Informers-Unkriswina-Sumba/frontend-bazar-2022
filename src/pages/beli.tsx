@@ -158,9 +158,7 @@ const Beli: NextPage = () => {
   };
 
   useEffect(() => {
-    console.log('router.query', router.query);
     if (router.query.productId) {
-      console.log('router.query.productId', router.query.productId);
       setListProductId(router.query.productId);
       getListProduct(router.query.productId);
     }

@@ -210,22 +210,6 @@ export const DATA_ANGGOTA_KELOMPOK: IAnggotaKelompok[] = [
     ],
   },
   {
-    nama: 'sarlin Hona Nalu',
-    nim: '2119012',
-    nomorhp: '082146512174',
-    kelas: 'C',
-    sosialMedia: [
-      {
-        type: 'facebook',
-        link: 'https://www.facebook.com/sarlin.honanalu',
-      },
-      {
-        type: 'twitter',
-        link: '',
-      },
-    ],
-  },
-  {
     nama: 'Faldi Eduard Tetelepta',
     nim: '2119011',
     nomorhp: '082235080146',
@@ -280,7 +264,7 @@ export const DATA_ANGGOTA_KELOMPOK: IAnggotaKelompok[] = [
     kelas: 'D',
     sosialMedia: [
       {
-        type: 'facebook',
+        type: 'f123acebook',
         link: 'https://www.facebook.com/anggy.rambu.39',
       },
       {
@@ -288,5 +272,10 @@ export const DATA_ANGGOTA_KELOMPOK: IAnggotaKelompok[] = [
         link: '',
       },
     ],
+  },
+  {
+    nama: 'Riswan S. Njurumana',
+    nim: '2119010',
+    sosialMedia: [],
   },
 ];

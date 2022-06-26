@@ -71,9 +71,7 @@ const Keranjang: NextPage = () => {
     setLoadingGetListProduct(true);
     let listProduct: any[] = [];
     for (const id of keranjang.keranjang) {
-      console.log('id', id);
       const res = await ApiGetDetailProdukById(id.productId);
-      console.log('res', res);
       if (res.status === 200) {
         const lapak = await ApiGetLapakById(res.data.data.lapak);
         if (lapak.status === 200) {
@@ -90,7 +88,6 @@ const Keranjang: NextPage = () => {
         }
       }
     }
-    console.log('listProduct', listProduct);
     setListProduct(listProduct);
     setLoadingGetListProduct(false);
   };
@@ -105,6 +102,7 @@ const Keranjang: NextPage = () => {
         },
       ];
       setListProductToBuy(newKeranjang);
+      return true;
     } else {
       // check if product is exits
       const index = findIndex(listProductToBuy, ['productId', e.id]);
@@ -115,6 +113,7 @@ const Keranjang: NextPage = () => {
           ...listProductToBuy.slice(index + 1, listProductToBuy.length),
         ];
         setListProductToBuy(newKeranjang);
+        return false;
       } else {
         // check if lapak not same
         const indexbyLapak = findIndex(listProductToBuy, [
@@ -129,18 +128,22 @@ const Keranjang: NextPage = () => {
             duration: 5000,
             position: 'bottom-left',
           });
+          return false;
+        } else {
+          // add
+          let newKeranjang = [
+            ...listProductToBuy.slice(0, index),
+            { productId: e.id, lapakId: e.lapak.id },
+            ...listProductToBuy.slice(index + 1, listProductToBuy.length),
+          ];
+          setListProductToBuy(newKeranjang);
+          return true;
         }
-        // add
-        let newKeranjang = [
-          ...listProductToBuy.slice(0, index),
-          { productId: e.id, lapakId: e.lapak.id },
-          ...listProductToBuy.slice(index + 1, listProductToBuy.length),
-        ];
-        setListProductToBuy(newKeranjang);
       }
     }
-    console.log(e);
   };
+
+  const checkIsKeranjangValid = () => {};
 
   useEffect(() => {
     if (keranjang.keranjang.length === 0) {
@@ -164,40 +167,13 @@ const Keranjang: NextPage = () => {
           <Spinner />
         ) : (
           listProduct.map((product, index) => (
-            <Box mt='10' key={index} w='full'>
-              <Flex key={index} w='full' gap='15px'>
-                <Image src={product.gambar} w='100px' h='100px' />
-                <Box>
-                  <Text fontSize='16px' fontWeight='700'>
-                    {product.nama}
-                  </Text>
-                  <Text>{product.lapak.nama}</Text>
-                  <Box fontSize='2xl' color='gray.800'>
-                    <Box as='span' color={'gray.600'} fontSize='lg'>
-                      Rp.
-                    </Box>
-                    {product.harga}
-                  </Box>
-                </Box>
-              </Flex>
-              <Box display='flex' justifyContent='flex-end' gap='10px'>
-                <Checkbox
-                  onChange={() => handleChangeCheckbox(product)}
-                  colorScheme='green'
-                >
-                  Beli
-                </Checkbox>
-                <Button
-                  bgColor='red.300'
-                  color='white'
-                  size='sm'
-                  mt='4'
-                  onClick={() => handleHapus(product.id)}
-                >
-                  Hapus
-                </Button>
-              </Box>
-            </Box>
+            <KeranjangItem
+              index={index}
+              product={product}
+              handleChangeCheckbox={handleChangeCheckbox}
+              handleHapus={handleHapus}
+              key={index}
+            />
           ))
         )}
         <Button
@@ -216,3 +192,53 @@ const Keranjang: NextPage = () => {
 };
 
 export default Keranjang;
+
+interface IPropsKeranjangItem {
+  index: number;
+  product: any;
+  handleChangeCheckbox: (e: any) => boolean;
+  handleHapus: (id: string) => Promise<void>;
+}
+
+const KeranjangItem: React.FC<IPropsKeranjangItem> = (props) => {
+  const [checked, setChecked] = useState(false);
+
+  const onChange = () => {
+    const result = props.handleChangeCheckbox(props.product);
+    setChecked(result);
+  };
+
+  return (
+    <Box mt='10' key={props.index} w='full'>
+      <Flex key={props.index} w='full' gap='15px'>
+        <Image src={props.product.gambar} w='100px' h='100px' />
+        <Box>
+          <Text fontSize='16px' fontWeight='700'>
+            {props.product.nama}
+          </Text>
+          <Text>{props.product.lapak.nama}</Text>
+          <Box fontSize='2xl' color='gray.800'>
+            <Box as='span' color={'gray.600'} fontSize='lg'>
+              Rp.
+            </Box>
+            {props.product.harga}
+          </Box>
+        </Box>
+      </Flex>
+      <Box display='flex' justifyContent='flex-end' gap='10px'>
+        <Checkbox onChange={onChange} colorScheme='green' isChecked={checked}>
+          Beli
+        </Checkbox>
+        <Button
+          bgColor='red.300'
+          color='white'
+          size='sm'
+          mt='4'
+          onClick={() => props.handleHapus(props.product.id)}
+        >
+          Hapus
+        </Button>
+      </Box>
+    </Box>
+  );
+};

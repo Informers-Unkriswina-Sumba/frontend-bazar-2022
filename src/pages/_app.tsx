@@ -42,7 +42,6 @@ const GlobalStyles = css`
 export default function App({ Component, pageProps }: AppProps) {
   const getPelapak = async () => {
     const res = await ApiCheckLoginPelapak();
-    console.log('res', res);
     if (res.status === 200) {
       store.dispatch({ type: 'SET_PELAPAK', pelapak: res.data.data });
       setLocal(PELAPAK_TOKEN_LOCAL_STORAGE, res.data.data.token);

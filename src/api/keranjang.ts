@@ -22,7 +22,6 @@ export const ApiGetKeranjang = async (idGuest: string) => {
 export const ApiAddProductToKeranjang = async (productId: string) => {
   checkIsGuestIdExist();
   const guestId = getLocal(GUEST_USER_ID_LOCAL_STORAGE);
-  console.log('productId', productId);
   const response = await axios
     .post(`${BACKEND_URL}/guest/keranjang/add`, {
       idGuest: guestId,

@@ -7,13 +7,19 @@ import LayoutMainApp from 'components/Layout/LayoutMainApp';
 import { APP_TITLE, PELAPAK_TOKEN_LOCAL_STORAGE } from 'constant';
 import type { NextPage } from 'next';
 import Head from 'next/head';
-import { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { actionSetPelapak } from 'provider/redux/Pelapak/PelapakAction';
 import { createStandaloneToast } from '@chakra-ui/toast';
 import { duration } from 'moment';
 import { useRouter } from 'next/router';
 import { setLocal } from 'helper/localStorage';
+import { IPelapakState } from 'provider/redux/Pelapak/PelapakReducer';
+import { ICombinedState } from 'provider/redux/store';
+
+interface IReduxStateWorkspace {
+  pelapak: IPelapakState;
+}
 
 const LoginPelapak: NextPage = () => {
   const [formLogin, setFormLogin] = useState({
@@ -24,7 +30,13 @@ const LoginPelapak: NextPage = () => {
   const dispatch = useDispatch();
   const toast = createStandaloneToast();
   const router = useRouter();
-
+  const { pelapak } = useSelector<ICombinedState, IReduxStateWorkspace>(
+    (state) => {
+      return {
+        pelapak: state.pelapak,
+      };
+    }
+  );
   const onChange = (e: any) => {
     setFormLogin({
       ...formLogin,
@@ -49,6 +61,12 @@ const LoginPelapak: NextPage = () => {
     }
     setLoadingLogin(false);
   };
+
+  useEffect(() => {
+    if (pelapak.pelapak) {
+      router.push('/dashboard-lapak');
+    }
+  }, [pelapak.pelapak]);
 
   return (
     <LayoutMainApp>

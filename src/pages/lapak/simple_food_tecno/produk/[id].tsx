@@ -74,10 +74,8 @@ const Produk: NextPage = () => {
   };
 
   useEffect(() => {
-    console.log('router', router.query.id);
     if (router.query.id) {
       // const productId = router.query.id[0] ?? router.query.id;
-      // console.log('productId', productId);
       const id: any = router.query.id;
       setProductId(id);
       getDetailProduk(id);

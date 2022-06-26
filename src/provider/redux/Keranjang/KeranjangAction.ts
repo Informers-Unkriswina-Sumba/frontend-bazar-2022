@@ -17,7 +17,6 @@ export const actionGetKeranjang = () => {
     checkIsGuestIdExist();
     const guestId = getLocal(GUEST_USER_ID_LOCAL_STORAGE);
     const response = await ApiGetKeranjang(guestId);
-    console.log('response', response);
     if (response.status === 200) {
       dispatch({
         type: 'GET_KERANJANG_SUCCESS',

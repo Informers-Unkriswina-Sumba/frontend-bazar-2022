@@ -90,7 +90,9 @@ const DashboardLapak: NextPage = () => {
       </Head>
       <TableContainer>
         <Table variant='simple'>
-          <TableCaption>Daftar Pemesanan Lapak{lapak?.namaLapak}</TableCaption>
+          <TableCaption fontSize='22' fontWeight='600'>
+            Daftar Pemesanan Lapak {lapak?.namaLapak}
+          </TableCaption>
           <Thead>
             <Tr>
               <Th>No</Th>
