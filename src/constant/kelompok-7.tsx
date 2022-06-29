@@ -205,4 +205,19 @@ export const DATA_ANGGOTA_KELOMPOK: IAnggotaKelompok[] = [
       },
     ],
   },
+  {
+    nama: 'MESKE SILVIA UPA RAJI',
+    nim: '2119116',
+    sosialMedia: [],
+  },
+  {
+    nama: 'JENS UMBU YIWA',
+    nim: '2419037',
+    sosialMedia: [],
+  },
+  {
+    nim: '2419013',
+    nama: 'RISALDI UMBU HUNGA LADU',
+    sosialMedia: [],
+  },
 ];

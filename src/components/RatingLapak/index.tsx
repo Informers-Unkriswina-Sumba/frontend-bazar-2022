@@ -18,7 +18,6 @@ const size = 50;
 const scale = 5;
 
 const RatingLapak = React.forwardRef((props: any, ref: any) => {
-  console.log('props', props);
   const [rating, setRating] = useState(0);
   const [loadingCreatePenilaian, setLoadingCreatePenilaian] = useState(false);
   const [penilaian, setPenilaian] = useState<any>();

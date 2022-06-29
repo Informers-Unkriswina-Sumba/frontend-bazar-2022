@@ -34,7 +34,6 @@ const Kenangan: NextPage = () => {
       LIST_LAPAK_DATA.KELOMPOK_2.slugName
     );
     if (res.status === 200) {
-      console.log('res.data.data', res.data.data);
       setLapak(res.data.data);
     }
     setLoadingGetLapak(false);

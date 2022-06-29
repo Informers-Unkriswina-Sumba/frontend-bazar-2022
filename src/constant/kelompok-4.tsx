@@ -46,11 +46,11 @@ export const DATA_ANGGOTA_KELOMPOK: IAnggotaKelompok[] = [
     nama: 'DIONISIUS DEFRI HAMBABANJU',
     sosialMedia: [],
   },
-  {
-    nim: '2119050',
-    nama: 'RIFALDO MARAMBA DJAWA',
-    sosialMedia: [],
-  },
+  // {
+  //   nim: '2119050',
+  //   nama: 'RIFALDO MARAMBA DJAWA',
+  //   sosialMedia: [],
+  // },
   {
     nim: '2119057',
     nama: 'DOCHETRIN RAMBULEKI',

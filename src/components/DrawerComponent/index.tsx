@@ -66,7 +66,7 @@ const DrawerComponent: React.FC<IProps> = (): ReactElement => {
 
           <DrawerFooter>
             <Text
-              fontSize='xx-large'
+              fontSize='large'
               textTransform='uppercase'
               opacity='.6'
               fontWeight='extrabold'

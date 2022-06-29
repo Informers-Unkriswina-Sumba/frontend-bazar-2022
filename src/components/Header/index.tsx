@@ -53,7 +53,7 @@ const Header: React.FC<IProps> = (): ReactElement => {
             enTECHNOpreneurship FAIR 2022
           </Text>
           <Text fontSize='sm' fontWeight='medium' align='center'>
-            By: TIF- AGB- THP
+            By: TIF-AGB-THP
           </Text>
         </Flex>
         <Flex align='center' justify='space-between' direction='row'>

@@ -1,19 +1,26 @@
 import { Button } from '@chakra-ui/button';
 import { FormControl, FormLabel } from '@chakra-ui/form-control';
-import { Input } from '@chakra-ui/input';
+import { Input, InputGroup, InputRightElement } from '@chakra-ui/input';
 import { Box, Flex, Heading, Stack } from '@chakra-ui/layout';
 import { ApiLoginPelapak } from 'api/pelapak';
 import LayoutMainApp from 'components/Layout/LayoutMainApp';
 import { APP_TITLE, PELAPAK_TOKEN_LOCAL_STORAGE } from 'constant';
 import type { NextPage } from 'next';
 import Head from 'next/head';
-import { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { actionSetPelapak } from 'provider/redux/Pelapak/PelapakAction';
 import { createStandaloneToast } from '@chakra-ui/toast';
 import { duration } from 'moment';
 import { useRouter } from 'next/router';
 import { setLocal } from 'helper/localStorage';
+import { IPelapakState } from 'provider/redux/Pelapak/PelapakReducer';
+import { ICombinedState } from 'provider/redux/store';
+import { FaEye, FaEyeSlash } from 'react-icons/fa';
+
+interface IReduxStateWorkspace {
+  pelapak: IPelapakState;
+}
 
 const LoginPelapak: NextPage = () => {
   const [formLogin, setFormLogin] = useState({
@@ -22,9 +29,16 @@ const LoginPelapak: NextPage = () => {
   });
   const [loadingLogin, setLoadingLogin] = useState(false);
   const dispatch = useDispatch();
+  const [showPassword, setShowPassword] = useState(false);
   const toast = createStandaloneToast();
   const router = useRouter();
-
+  const { pelapak } = useSelector<ICombinedState, IReduxStateWorkspace>(
+    (state) => {
+      return {
+        pelapak: state.pelapak,
+      };
+    }
+  );
   const onChange = (e: any) => {
     setFormLogin({
       ...formLogin,
@@ -50,6 +64,16 @@ const LoginPelapak: NextPage = () => {
     setLoadingLogin(false);
   };
 
+  const togglePassword = () => {
+    setShowPassword(!showPassword);
+  };
+
+  useEffect(() => {
+    if (pelapak.pelapak) {
+      router.push('/dashboard-lapak');
+    }
+  }, [pelapak.pelapak]);
+
   return (
     <LayoutMainApp>
       <Head>
@@ -74,12 +98,31 @@ const LoginPelapak: NextPage = () => {
               </FormControl>
               <FormControl id='password'>
                 <FormLabel>Password</FormLabel>
-                <Input
-                  name='password'
-                  value={formLogin.password}
-                  onChange={onChange}
-                  type='password'
-                />
+                <InputGroup>
+                  <Input
+                    placeholder='Password'
+                    type={showPassword ? 'text' : 'password'}
+                    value={formLogin.password}
+                    name='password'
+                    onChange={onChange}
+                    color='#353535'
+                    borderRadius='8px'
+                    height='48px'
+                  />
+                  <InputRightElement height='48px'>
+                    <Button
+                      p={'0.8rem'}
+                      variant={'ghost'}
+                      onClick={togglePassword}
+                    >
+                      {showPassword ? (
+                        <FaEyeSlash size={'20px'} fill={'#888'} />
+                      ) : (
+                        <FaEye size={20} fill={'#888'} />
+                      )}
+                    </Button>
+                  </InputRightElement>
+                </InputGroup>
               </FormControl>
               <Stack spacing={10}>
                 <Button
