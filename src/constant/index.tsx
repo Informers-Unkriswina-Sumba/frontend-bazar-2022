@@ -24,6 +24,11 @@ export const APP_ROUTE_DRAWER = [
     label: 'Keranjang',
     icon: <BsCart3 />,
   },
+  {
+    key: '/summary',
+    label: 'Rangkuman',
+    icon: <BsCart3 />,
+  },
 ];
 
 export const APP_ROUTE_MAIN = [
