@@ -10,29 +10,95 @@ import {
   Collapse,
   Flex,
   SimpleGrid,
+  Spinner,
   Stat,
   StatLabel,
   StatNumber,
   useColorModeValue,
   useDisclosure,
 } from '@chakra-ui/react';
-import { ReactNode, useState } from 'react';
-import { BsPerson } from 'react-icons/bs';
-import { FiServer } from 'react-icons/fi';
+import { ReactNode, useEffect, useState } from 'react';
+import { TiGroup } from 'react-icons/ti';
+import { AiOutlineShop } from 'react-icons/ai';
+import { MdGroups, MdFastfood } from 'react-icons/md';
+import { GiMoneyStack } from 'react-icons/gi';
 import { GoLocation } from 'react-icons/go';
+
+import moment from 'moment';
 import {
   Badge,
   Button,
   Center,
   Heading,
   Image,
-  Link,
   Stack,
   Text,
 } from '@chakra-ui/react';
 import { AiFillStar } from 'react-icons/ai';
+import {
+  ApiGetBestPerformanceLapak,
+  ApiGetBestPerformanceMahasiswa,
+  ApiGetSummaryData,
+} from 'api/summary';
+import {
+  ISummaryInfoPenilaianLapak,
+  ISummaryPenilainMahasiswa,
+  ISummaryReviewPenilainLapak,
+  ISummaryReviewPenilainMahasiswa,
+} from 'interfaces/penilaian';
+import Link from 'next/link';
+import { DATA_MAHASISWA } from 'constant/data-mahasiswa';
 
 const Summary: NextPage = () => {
+  const [loadingGetTotal, setLoadingGetTotal] = useState(false);
+  const [loadingGetLapak, setLoadingGetLapak] = useState(false);
+  const [loadingGetMahasiswa, setLoadingGetMahasiswa] = useState(false);
+  const [dataTotal, setDataTotal] = useState({
+    totalLapak: 0,
+    totalProduk: 0,
+    totalInvoice: 0,
+    totalPelapak: 0,
+  });
+  const [dataBestLapak, setDataBestLapak] = useState<
+    ISummaryInfoPenilaianLapak[]
+  >([]);
+  const [dataBestMahasiswa, setDataBestMahasiswa] = useState<
+    ISummaryPenilainMahasiswa[]
+  >([]);
+
+  const getTotalData = async () => {
+    setLoadingGetTotal(true);
+    const res = await ApiGetSummaryData();
+    if (res.status === 200) {
+      setDataTotal(res.data.data);
+    }
+    setLoadingGetTotal(false);
+  };
+
+  const getBestLapak = async () => {
+    setLoadingGetLapak(true);
+    const res = await ApiGetBestPerformanceLapak();
+    if (res.status === 200) {
+      setDataBestLapak(res.data.data);
+    }
+    setLoadingGetLapak(false);
+  };
+
+  const getBestMahasiswa = async () => {
+    setLoadingGetMahasiswa(true);
+    const res = await ApiGetBestPerformanceMahasiswa();
+    if (res.status === 200) {
+      setDataBestMahasiswa(res.data.data);
+    }
+    setLoadingGetMahasiswa(false);
+  };
+
+  useEffect(() => {
+    getTotalData();
+    getBestLapak();
+    getBestMahasiswa();
+  }, []);
+
   return (
     <Layout>
       <Head>
@@ -49,23 +115,32 @@ const Summary: NextPage = () => {
           >
             Hasil Rangkuman Kegiatan enTECHNOpreneurship FAIR 2022
           </chakra.h1>
-          <SimpleGrid columns={1} spacing={5}>
-            <StatsCard
-              title={'Lapak'}
-              stat={'5,000'}
-              icon={<BsPerson size={'3em'} />}
-            />
-            <StatsCard
-              title={'Produk'}
-              stat={'1,000'}
-              icon={<FiServer size={'3em'} />}
-            />
-            <StatsCard
-              title={'Pelapak'}
-              stat={'200'}
-              icon={<GoLocation size={'3em'} />}
-            />
-          </SimpleGrid>
+          {loadingGetTotal ? (
+            <Spinner />
+          ) : (
+            <SimpleGrid columns={1} spacing={5}>
+              <StatsCard
+                title={'Lapak'}
+                stat={dataTotal.totalLapak.toString()}
+                icon={<AiOutlineShop size={'3em'} />}
+              />
+              <StatsCard
+                title={'Produk'}
+                stat={dataTotal.totalProduk.toString()}
+                icon={<MdFastfood size={'3em'} />}
+              />
+              <StatsCard
+                title={'Mahasiswa'}
+                stat={dataTotal.totalPelapak.toString()}
+                icon={<MdGroups size={'3em'} />}
+              />
+              <StatsCard
+                title={'Transaksi'}
+                stat={dataTotal.totalInvoice.toString()}
+                icon={<GiMoneyStack size={'3em'} />}
+              />
+            </SimpleGrid>
+          )}
         </Box>
         <Box maxW='7xl' mx={'auto'} pt={5} px={1}>
           <chakra.h1
@@ -76,11 +151,19 @@ const Summary: NextPage = () => {
           >
             Lapak Best Perfomance
           </chakra.h1>
-          <SimpleGrid columns={1} spacing={5}>
-            {[1, 2, 3].map((index) => (
-              <LapakBestPerformanceItem key={index} />
-            ))}
-          </SimpleGrid>
+          {loadingGetLapak ? (
+            <Spinner />
+          ) : (
+            <SimpleGrid columns={1} spacing={5}>
+              {dataBestLapak.map((lapak, index) => (
+                <LapakBestPerformanceItem
+                  key={index}
+                  index={index}
+                  lapak={lapak}
+                />
+              ))}
+            </SimpleGrid>
+          )}
         </Box>
         <Box maxW='7xl' mx={'auto'} pt={5} px={1}>
           <chakra.h1
@@ -89,13 +172,21 @@ const Summary: NextPage = () => {
             py={10}
             fontWeight={'bold'}
           >
-            Pelapak Best Perfomance
+            Mahasiswa Best Perfomance (Top 50)
           </chakra.h1>
-          <SimpleGrid columns={1} spacing={5}>
-            {[1, 2, 3].map((index) => (
-              <PelapakBestPerformanceItem key={index} />
-            ))}
-          </SimpleGrid>
+          {loadingGetMahasiswa ? (
+            <Spinner />
+          ) : (
+            <SimpleGrid columns={1} spacing={5}>
+              {dataBestMahasiswa.map((mahasiswa, index) => (
+                <PelapakBestPerformanceItem
+                  mahasiswa={mahasiswa}
+                  key={index}
+                  index={index}
+                />
+              ))}
+            </SimpleGrid>
+          )}
         </Box>
       </Box>
     </Layout>
@@ -139,7 +230,10 @@ function StatsCard(props: StatsCardProps) {
   );
 }
 
-interface ILapakBestPerformanceItem {}
+interface ILapakBestPerformanceItem {
+  lapak: ISummaryInfoPenilaianLapak;
+  index: number;
+}
 
 const size = 1;
 const scale = 5;
@@ -150,10 +244,11 @@ const backgrounds = [
   `url("data:image/svg+xml, %3Csvg xmlns='http://www.w3.org/2000/svg' width='560' height='185' viewBox='0 0 560 185' fill='none'%3E%3Cellipse cx='457.367' cy='123.926' rx='102.633' ry='61.0737' transform='rotate(-180 457.367 123.926)' fill='%23ECC94B'/%3E%3Cellipse cx='160.427' cy='61.0737' rx='102.633' ry='61.0737' transform='rotate(-180 160.427 61.0737)' fill='%239F7AEA'/%3E%3Cellipse cx='193.808' cy='111.771' rx='193.808' ry='73.2292' transform='rotate(-180 193.808 111.771)' fill='%234299E1'/%3E%3Cellipse cx='337.295' cy='74.415' rx='193.808' ry='73.2292' transform='rotate(-180 337.295 74.415)' fill='%2348BB78'/%3E%3C/svg%3E")`,
 ];
 
-const LapakBestPerformanceItem: React.FC<ILapakBestPerformanceItem> = (
-  props
-) => {
-  const [rating, setRating] = useState(4);
+const LapakBestPerformanceItem: React.FC<ILapakBestPerformanceItem> = ({
+  lapak,
+  index,
+}) => {
+  const [rating, setRating] = useState(0);
   const { isOpen, onToggle } = useDisclosure();
   const buttons = [];
   const buttonsItem: any = [];
@@ -222,6 +317,21 @@ const LapakBestPerformanceItem: React.FC<ILapakBestPerformanceItem> = (
     buttonsItem.push(<RatingButtonItem key={i} idx={i} fill={i <= rating} />);
   }
 
+  const countRating = () => {
+    let count = 0;
+    const listRatingValue = lapak?.review?.map((rat) => rat.rating);
+    const sum = listRatingValue?.reduce(function (sum, item, index) {
+      count += item;
+      return sum + item * (index + 1);
+    }, 0);
+    let finalTotal = sum / count;
+    setRating(finalTotal);
+  };
+
+  useEffect(() => {
+    countRating();
+  }, []);
+
   return (
     <Box py={6}>
       <Stack
@@ -232,16 +342,34 @@ const LapakBestPerformanceItem: React.FC<ILapakBestPerformanceItem> = (
         bg={useColorModeValue('white', 'gray.900')}
         boxShadow={'2xl'}
         padding={4}
+        position='relative'
       >
         <Flex flex={1} bg='blue.200'>
           <Image
             objectFit='cover'
             boxSize='100%'
             src={
+              lapak?.info?.logo ??
               'https://images.unsplash.com/photo-1520810627419-35e362c5dc07?ixlib=rb-1.2.1&q=80&fm=jpg&crop=faces&fit=crop&h=200&w=200&ixid=eyJhcHBfaWQiOjE3Nzg0fQ'
             }
           />
         </Flex>
+        {index < 3 && (
+          <Flex
+            justify={'center'}
+            w='60px'
+            h='60px'
+            borderRadius='100%'
+            backgroundColor='green.300'
+            position='absolute'
+            top='0'
+            alignItems='center'
+          >
+            <Text color='white' fontSize='40px' fontWeight='extrabold'>
+              {index + 1}
+            </Text>
+          </Flex>
+        )}
         <Stack
           flex={1}
           flexDirection='column'
@@ -251,17 +379,17 @@ const LapakBestPerformanceItem: React.FC<ILapakBestPerformanceItem> = (
           pt={2}
         >
           <Heading fontSize={'2xl'} fontFamily={'body'}>
-            Lapak Name
+            {lapak?.info?.namaLapak}
           </Heading>
           <Text fontWeight={600} color={'gray.500'} size='sm' mb={4}>
-            Kelompok Lapak
+            {lapak?.info?.namaKelompok}
           </Text>
           <Text
             textAlign={'center'}
             color={useColorModeValue('gray.700', 'gray.400')}
             px={3}
           >
-            Deskripsi Lapak
+            {lapak?.info?.deskripsi.slice(0, 60)}...
           </Text>
           <Stack
             align={'center'}
@@ -277,7 +405,7 @@ const LapakBestPerformanceItem: React.FC<ILapakBestPerformanceItem> = (
               fontWeight='semibold'
               lineHeight='1.2em'
             >
-              104 kali review
+              {lapak?.review?.length} kali review
             </Text>
           </Stack>
 
@@ -289,24 +417,26 @@ const LapakBestPerformanceItem: React.FC<ILapakBestPerformanceItem> = (
             justifyContent={'space-between'}
             alignItems={'center'}
           >
-            <Button
-              flex={1}
-              fontSize={'sm'}
-              rounded={'full'}
-              bg={'blue.400'}
-              color={'white'}
-              boxShadow={
-                '0px 1px 25px -5px rgb(66 153 225 / 48%), 0 10px 10px -5px rgb(66 153 225 / 43%)'
-              }
-              _hover={{
-                bg: 'blue.500',
-              }}
-              _focus={{
-                bg: 'blue.500',
-              }}
-            >
-              Lihat Profile Lapak
-            </Button>
+            <Link href={`/lapak/${lapak?.info?.slugName}`}>
+              <Button
+                flex={1}
+                fontSize={'sm'}
+                rounded={'full'}
+                bg={'blue.400'}
+                color={'white'}
+                boxShadow={
+                  '0px 1px 25px -5px rgb(66 153 225 / 48%), 0 10px 10px -5px rgb(66 153 225 / 43%)'
+                }
+                _hover={{
+                  bg: 'blue.500',
+                }}
+                _focus={{
+                  bg: 'blue.500',
+                }}
+              >
+                Lihat Profile Lapak
+              </Button>
+            </Link>
           </Stack>
         </Stack>
       </Stack>
@@ -315,7 +445,7 @@ const LapakBestPerformanceItem: React.FC<ILapakBestPerformanceItem> = (
       </Button>
       <Collapse in={isOpen} animateOpacity>
         <SimpleGrid columns={1} spacing={'10'} padding={2} mt={10} mx={'auto'}>
-          {[1, 2, 3].map((index) => (
+          {lapak?.review?.map((review, index) => (
             <Flex
               key={index}
               boxShadow={'lg'}
@@ -359,7 +489,7 @@ const LapakBestPerformanceItem: React.FC<ILapakBestPerformanceItem> = (
                 justifyContent={'space-between'}
               >
                 <chakra.p fontWeight={'medium'} fontSize={'16px'} pb={4}>
-                  Review Messages
+                  {review?.description}
                 </chakra.p>
                 <Flex gap='5px'>{buttonsItem}</Flex>
                 <chakra.p
@@ -368,7 +498,7 @@ const LapakBestPerformanceItem: React.FC<ILapakBestPerformanceItem> = (
                   fontSize={14}
                   mt={4}
                 >
-                  Dibuat pada: 23 Juni 2020
+                  Dibuat pada: {moment(review?.createdAt).format('LL')}
                 </chakra.p>
               </Flex>
             </Flex>
@@ -379,77 +509,139 @@ const LapakBestPerformanceItem: React.FC<ILapakBestPerformanceItem> = (
   );
 };
 
-interface IPelapakBestPerformanceItem {}
-const PelapakBestPerformanceItem: React.FC<IPelapakBestPerformanceItem> =
-  () => {
+interface IPelapakBestPerformanceItem {
+  mahasiswa: ISummaryPenilainMahasiswa;
+  index: number;
+}
+const PelapakBestPerformanceItem: React.FC<IPelapakBestPerformanceItem> = ({
+  mahasiswa,
+  index,
+}) => {
+  const renderMenyenangkan = () => {
+    const total = mahasiswa.dataRating.filter(
+      (rat) => rat.description === 'Sangat Menyenangkan'
+    );
     return (
-      <Center py={6}>
-        <Box
-          // maxW={'270px'}
-          w={'full'}
-          bg={useColorModeValue('white', 'gray.800')}
-          boxShadow={'2xl'}
-          rounded={'md'}
-          overflow={'hidden'}
-        >
-          <Image
-            h={'120px'}
-            w={'full'}
-            src={'/images/info.jpeg'}
-            objectFit={'cover'}
-          />
-          <Flex justify={'center'} mt={-12}>
-            <Avatar
-              size={'xl'}
-              src={
-                'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-1.2.1&q=80&fm=jpg&crop=faces&fit=crop&h=200&w=200&ixid=eyJhcHBfaWQiOjE3Nzg0fQ'
-              }
-              css={{
-                border: '2px solid white',
-              }}
-            />
-          </Flex>
-          <Box p={6}>
-            <Stack spacing={0} align={'center'} mb={5}>
-              <Heading fontSize={'2xl'} fontWeight={500} fontFamily={'body'}>
-                Nama Pelapak
-              </Heading>
-              <Text color={'gray.500'}>Devisi</Text>
-              <Text color={'gray.500'}>NIM</Text>
-            </Stack>
-            <Stack
-              direction='column'
-              alignItems='center'
-              justify={'center'}
-              spacing={2}
-            >
-              <Stack direction='row' spacing={0} align={'center'}>
-                <Text fontSize={'md'} color={'gray.500'}>
-                  🤩 (Sangat Menyenangkan) :
-                </Text>
-                <Text fontWeight={600}>100 kali</Text>
-              </Stack>
-              <Stack direction='row' spacing={0} align={'center'}>
-                <Text fontSize={'md'} color={'gray.500'}>
-                  😃 (Asik) :
-                </Text>
-                <Text fontWeight={600}>100 kali</Text>
-              </Stack>
-              <Stack direction='row' spacing={0} align={'center'}>
-                <Text fontSize={'md'} color={'gray.500'}>
-                  🙂 (Cukup) :
-                </Text>
-                <Text fontWeight={600}>100 kali</Text>
-              </Stack>
-              <Stack direction='row' spacing={0} align={'center'}>
-                <Text fontSize={'md'} color={'gray.500'}>
-                  😭 (Tidak Menyenangkan) :
-                </Text>
-                <Text fontWeight={600}>100 kali</Text>
-              </Stack>
-            </Stack>
-          </Box>
-        </Box>
-      </Center>
+      <Stack direction='row' spacing={0} align={'center'}>
+        <Text fontSize={'md'} color={'gray.500'}>
+          🤩 (Sangat Menyenangkan) :
+        </Text>
+        <Text fontWeight={600}>{total.length} kali</Text>
+      </Stack>
     );
   };
+
+  const renderAsik = () => {
+    const total = mahasiswa.dataRating.filter(
+      (rat) => rat.description === 'Asik'
+    );
+    return (
+      <Stack direction='row' spacing={0} align={'center'}>
+        <Text fontSize={'md'} color={'gray.500'}>
+          😃 (Asik) :
+        </Text>
+        <Text fontWeight={600}>{total.length} kali</Text>
+      </Stack>
+    );
+  };
+
+  const renderCukup = () => {
+    const total = mahasiswa.dataRating.filter(
+      (rat) => rat.description === 'Cukup'
+    );
+    return (
+      <Stack direction='row' spacing={0} align={'center'}>
+        <Text fontSize={'md'} color={'gray.500'}>
+          🙂 (Cukup) :
+        </Text>
+        <Text fontWeight={600}>{total.length} kali</Text>
+      </Stack>
+    );
+  };
+
+  const renderTidakMenyenangkan = () => {
+    const total = mahasiswa.dataRating.filter(
+      (rat) => rat.description === 'Tidak Menyenangkan'
+    );
+    return (
+      <Stack direction='row' spacing={0} align={'center'}>
+        <Text fontSize={'md'} color={'gray.500'}>
+          😭 (Tidak Menyenangkan) :
+        </Text>
+        <Text fontWeight={600}>{total.length} kali</Text>
+      </Stack>
+    );
+  };
+
+  const renderName = (nim: string) => {
+    const mhs = DATA_MAHASISWA.filter(
+      (msh) => msh.nim.toLowerCase() === nim.toLowerCase()
+    )[0];
+    return mhs?.nama ?? 'Nama tidak disebutkan';
+  };
+
+  return (
+    <Center py={6}>
+      <Box
+        // maxW={'270px'}
+        w={'full'}
+        bg={useColorModeValue('white', 'gray.800')}
+        boxShadow={'2xl'}
+        rounded={'md'}
+        overflow={'hidden'}
+        position='relative'
+      >
+        <Image
+          h={'120px'}
+          w={'full'}
+          src='/images/info.jpeg'
+          objectFit={'cover'}
+        />
+        {index < 3 && (
+          <Flex
+            justify={'center'}
+            w='60px'
+            h='60px'
+            borderRadius='100%'
+            backgroundColor='green.300'
+            position='absolute'
+            top='0'
+            alignItems='center'
+          >
+            <Text color='white' fontSize='40px' fontWeight='extrabold'>
+              {index + 1}
+            </Text>
+          </Flex>
+        )}
+        <Box p={6}>
+          <Stack spacing={0} align={'center'} mb={5}>
+            <Heading fontSize={'2xl'} fontWeight={500} fontFamily={'body'}>
+              {renderName(mahasiswa.dataRating[0].nim)}
+            </Heading>
+            <Text color={'gray.500'}>Devisi</Text>
+            <Text color={'gray.500'}>{mahasiswa.dataRating[0].nim}</Text>
+            <Text
+              textAlign='center'
+              fontSize='2xl'
+              fontWeight='semibold'
+              lineHeight='1.2em'
+            >
+              {mahasiswa.dataRating.length} kali review
+            </Text>
+          </Stack>
+          <Stack
+            direction='column'
+            alignItems='center'
+            justify={'center'}
+            spacing={2}
+          >
+            {renderMenyenangkan()}
+            {renderAsik()}
+            {renderCukup()}
+            {renderTidakMenyenangkan()}
+          </Stack>
+        </Box>
+      </Box>
+    </Center>
+  );
+};

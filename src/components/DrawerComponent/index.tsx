@@ -48,7 +48,7 @@ const DrawerComponent: React.FC<IProps> = (): ReactElement => {
           <DrawerBody>
             {APP_ROUTE_DRAWER.map((route: IRouteApp) => (
               <Box key={route.key} my={2}>
-                <Link href={`/${route.key}`}>
+                <Link href={`${route.key}`}>
                   <Button onClick={onClose}>
                     <Text
                       fontSize='large'
