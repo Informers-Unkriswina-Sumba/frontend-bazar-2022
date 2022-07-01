@@ -202,35 +202,7 @@ interface StatsCardProps {
 }
 function StatsCard(props: StatsCardProps) {
   const { title, stat, icon } = props;
-  if (title === 'Transaksi') {
-    return (
-      <Tooltip
-        label='Jumlah transaksi yang terhitung pada sistem, belum termasuk yang laporan penjualan yang dibukukan manual oleh tiap lapak'
-        aria-label='A tooltip'
-      >
-        <Stat
-          px={2}
-          py={'5'}
-          shadow={'xl'}
-          border={'1px solid'}
-          borderColor='gray.800'
-          rounded={'lg'}
-        >
-          <Flex justifyContent={'space-between'}>
-            <Box pl={2}>
-              <StatLabel fontWeight={'medium'}>{title}</StatLabel>
-              <StatNumber fontSize={'2xl'} fontWeight={'medium'}>
-                {stat}
-              </StatNumber>
-            </Box>
-            <Box my={'auto'} color='gray.800' alignContent={'center'}>
-              {icon}
-            </Box>
-          </Flex>
-        </Stat>
-      </Tooltip>
-    );
-  }
+
   return (
     <Stat
       px={2}
@@ -243,6 +215,12 @@ function StatsCard(props: StatsCardProps) {
       <Flex justifyContent={'space-between'}>
         <Box pl={2}>
           <StatLabel fontWeight={'medium'}>{title}</StatLabel>
+          {title === 'Transaksi' && (
+            <Text fontSize='xs'>
+              Jumlah transaksi yang terhitung pada sistem, belum termasuk yang
+              laporan penjualan yang dibukukan manual oleh tiap lapak
+            </Text>
+          )}
           <StatNumber fontSize={'2xl'} fontWeight={'medium'}>
             {stat}
           </StatNumber>
