@@ -15,7 +15,7 @@ import {
   ApiCreatePenilaianAnggota,
   ApiGetPenilaianAnggotaByGuestAndNim,
 } from 'api/penilaianAnggota';
-import { GUEST_USER_ID_LOCAL_STORAGE } from 'constant';
+import { GUEST_USER_ID_LOCAL_STORAGE, IS_SHUTDOWN_SYSTEM } from 'constant';
 import { getLocal } from 'helper/localStorage';
 import { checkIsGuestIdExist } from 'helper/user';
 import { ReactElement, useEffect, useState } from 'react';
@@ -191,6 +191,15 @@ const AnggotaItem: React.FC<IProps> = (props): ReactElement => {
               <Box>
                 <Text>Perasaan: {penilaian.description}</Text>
                 <Text>Dibuat pada: {penilaian.createdAt}</Text>
+              </Box>
+            ) : IS_SHUTDOWN_SYSTEM ? (
+              <Box>
+                <Box>
+                  <Text textAlign='center'>Penilaian Telah Ditutup.</Text>
+                  <Text textAlign='center'>
+                    We are waiting for you next year 😄
+                  </Text>
+                </Box>
               </Box>
             ) : (
               <>

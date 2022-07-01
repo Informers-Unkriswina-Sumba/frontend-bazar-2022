@@ -111,3 +111,5 @@ export const LIST_LAPAK_DATA = {
     slugName: 'nuke_10',
   },
 };
+
+export const IS_SHUTDOWN_SYSTEM = true;

@@ -14,7 +14,6 @@ import {
   Stat,
   StatLabel,
   StatNumber,
-  useColorModeValue,
   useDisclosure,
 } from '@chakra-ui/react';
 import { ReactNode, useEffect, useState } from 'react';
@@ -48,6 +47,7 @@ import {
 } from 'interfaces/penilaian';
 import Link from 'next/link';
 import { DATA_MAHASISWA } from 'constant/data-mahasiswa';
+import { Tooltip } from '@chakra-ui/react';
 
 const Summary: NextPage = () => {
   const [loadingGetTotal, setLoadingGetTotal] = useState(false);
@@ -202,13 +202,42 @@ interface StatsCardProps {
 }
 function StatsCard(props: StatsCardProps) {
   const { title, stat, icon } = props;
+  if (title === 'Transaksi') {
+    return (
+      <Tooltip
+        label='Jumlah transaksi yang terhitung pada sistem, belum termasuk yang laporan penjualan yang dibukukan manual oleh tiap lapak'
+        aria-label='A tooltip'
+      >
+        <Stat
+          px={2}
+          py={'5'}
+          shadow={'xl'}
+          border={'1px solid'}
+          borderColor='gray.800'
+          rounded={'lg'}
+        >
+          <Flex justifyContent={'space-between'}>
+            <Box pl={2}>
+              <StatLabel fontWeight={'medium'}>{title}</StatLabel>
+              <StatNumber fontSize={'2xl'} fontWeight={'medium'}>
+                {stat}
+              </StatNumber>
+            </Box>
+            <Box my={'auto'} color='gray.800' alignContent={'center'}>
+              {icon}
+            </Box>
+          </Flex>
+        </Stat>
+      </Tooltip>
+    );
+  }
   return (
     <Stat
       px={2}
       py={'5'}
       shadow={'xl'}
       border={'1px solid'}
-      borderColor={useColorModeValue('gray.800', 'gray.500')}
+      borderColor='gray.800'
       rounded={'lg'}
     >
       <Flex justifyContent={'space-between'}>
@@ -218,11 +247,7 @@ function StatsCard(props: StatsCardProps) {
             {stat}
           </StatNumber>
         </Box>
-        <Box
-          my={'auto'}
-          color={useColorModeValue('gray.800', 'gray.200')}
-          alignContent={'center'}
-        >
+        <Box my={'auto'} color='gray.800' alignContent={'center'}>
           {icon}
         </Box>
       </Flex>
@@ -339,7 +364,7 @@ const LapakBestPerformanceItem: React.FC<ILapakBestPerformanceItem> = ({
         borderRadius='lg'
         w={{ sm: '100%', md: '540px' }}
         direction={{ base: 'column', md: 'row' }}
-        bg={useColorModeValue('white', 'gray.900')}
+        bg='white'
         boxShadow={'2xl'}
         padding={4}
         position='relative'
@@ -384,11 +409,7 @@ const LapakBestPerformanceItem: React.FC<ILapakBestPerformanceItem> = ({
           <Text fontWeight={600} color={'gray.500'} size='sm' mb={4}>
             {lapak?.info?.namaKelompok}
           </Text>
-          <Text
-            textAlign={'center'}
-            color={useColorModeValue('gray.700', 'gray.400')}
-            px={3}
-          >
+          <Text textAlign={'center'} color='gray.700' px={3}>
             {lapak?.info?.deskripsi.slice(0, 60)}...
           </Text>
           <Stack
@@ -522,7 +543,12 @@ const PelapakBestPerformanceItem: React.FC<IPelapakBestPerformanceItem> = ({
       (rat) => rat.description === 'Sangat Menyenangkan'
     );
     return (
-      <Stack direction='row' spacing={0} align={'center'}>
+      <Stack
+        direction='row'
+        spacing={0}
+        justifyContent='flex-start'
+        align='flex-start'
+      >
         <Text fontSize={'md'} color={'gray.500'}>
           🤩 (Sangat Menyenangkan) :
         </Text>
@@ -536,7 +562,12 @@ const PelapakBestPerformanceItem: React.FC<IPelapakBestPerformanceItem> = ({
       (rat) => rat.description === 'Asik'
     );
     return (
-      <Stack direction='row' spacing={0} align={'center'}>
+      <Stack
+        direction='row'
+        spacing={0}
+        justifyContent='flex-start'
+        align='flex-start'
+      >
         <Text fontSize={'md'} color={'gray.500'}>
           😃 (Asik) :
         </Text>
@@ -550,7 +581,12 @@ const PelapakBestPerformanceItem: React.FC<IPelapakBestPerformanceItem> = ({
       (rat) => rat.description === 'Cukup'
     );
     return (
-      <Stack direction='row' spacing={0} align={'center'}>
+      <Stack
+        direction='row'
+        spacing={0}
+        justifyContent='flex-start'
+        align='flex-start'
+      >
         <Text fontSize={'md'} color={'gray.500'}>
           🙂 (Cukup) :
         </Text>
@@ -564,7 +600,12 @@ const PelapakBestPerformanceItem: React.FC<IPelapakBestPerformanceItem> = ({
       (rat) => rat.description === 'Tidak Menyenangkan'
     );
     return (
-      <Stack direction='row' spacing={0} align={'center'}>
+      <Stack
+        direction='row'
+        spacing={0}
+        justifyContent='flex-start'
+        align='flex-start'
+      >
         <Text fontSize={'md'} color={'gray.500'}>
           😭 (Tidak Menyenangkan) :
         </Text>
@@ -585,7 +626,7 @@ const PelapakBestPerformanceItem: React.FC<IPelapakBestPerformanceItem> = ({
       <Box
         // maxW={'270px'}
         w={'full'}
-        bg={useColorModeValue('white', 'gray.800')}
+        bg='white'
         boxShadow={'2xl'}
         rounded={'md'}
         overflow={'hidden'}
@@ -618,8 +659,8 @@ const PelapakBestPerformanceItem: React.FC<IPelapakBestPerformanceItem> = ({
             <Heading fontSize={'2xl'} fontWeight={500} fontFamily={'body'}>
               {renderName(mahasiswa.dataRating[0].nim)}
             </Heading>
-            <Text color={'gray.500'}>Devisi</Text>
-            <Text color={'gray.500'}>{mahasiswa.dataRating[0].nim}</Text>
+            {/* <Text color={'gray.500'}>Devisi</Text> */}
+            <Text color={'gray.500'}>Nim: {mahasiswa.dataRating[0].nim}</Text>
             <Text
               textAlign='center'
               fontSize='2xl'
@@ -631,9 +672,10 @@ const PelapakBestPerformanceItem: React.FC<IPelapakBestPerformanceItem> = ({
           </Stack>
           <Stack
             direction='column'
-            alignItems='center'
+            alignItems='flex-start'
             justify={'center'}
             spacing={2}
+            ml={8}
           >
             {renderMenyenangkan()}
             {renderAsik()}

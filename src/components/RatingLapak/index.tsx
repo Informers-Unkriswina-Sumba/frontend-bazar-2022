@@ -12,7 +12,7 @@ import {
 } from 'api/penilaianLapak';
 import { checkIsGuestIdExist } from 'helper/user';
 import { getLocal } from 'helper/localStorage';
-import { GUEST_USER_ID_LOCAL_STORAGE } from 'constant';
+import { GUEST_USER_ID_LOCAL_STORAGE, IS_SHUTDOWN_SYSTEM } from 'constant';
 
 const size = 50;
 const scale = 5;
@@ -121,6 +121,15 @@ const RatingLapak = React.forwardRef((props: any, ref: any) => {
           <Text>Rating: {penilaian.rating} bintang</Text>
           <Text>Pesan: {penilaian.description}</Text>
           <Text>Dibuat pada: {penilaian.createdAt}</Text>
+        </Box>
+      ) : IS_SHUTDOWN_SYSTEM ? (
+        <Box mt={8}>
+          <Text fontSize='20px' textAlign='center' fontWeight='700'>
+            Penilaian Telah Ditutup.
+          </Text>
+          <Text fontSize='20px' textAlign='center' fontWeight='700'>
+            We are waiting for you next year 😄
+          </Text>
         </Box>
       ) : (
         <>
