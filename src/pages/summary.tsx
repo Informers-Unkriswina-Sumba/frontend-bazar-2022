@@ -149,7 +149,7 @@ const Summary: NextPage = () => {
             py={10}
             fontWeight={'bold'}
           >
-            Lapak Best Perfomance
+            Lapak Review
           </chakra.h1>
           {loadingGetLapak ? (
             <Spinner />
@@ -172,7 +172,7 @@ const Summary: NextPage = () => {
             py={10}
             fontWeight={'bold'}
           >
-            Mahasiswa Best Perfomance (Top 50)
+            Top 50 Mahasiswa Review
           </chakra.h1>
           {loadingGetMahasiswa ? (
             <Spinner />
@@ -357,22 +357,6 @@ const LapakBestPerformanceItem: React.FC<ILapakBestPerformanceItem> = ({
             }
           />
         </Flex>
-        {index < 3 && (
-          <Flex
-            justify={'center'}
-            w='60px'
-            h='60px'
-            borderRadius='100%'
-            backgroundColor='green.300'
-            position='absolute'
-            top='0'
-            alignItems='center'
-          >
-            <Text color='white' fontSize='40px' fontWeight='extrabold'>
-              {index + 1}
-            </Text>
-          </Flex>
-        )}
         <Stack
           flex={1}
           flexDirection='column'
@@ -616,22 +600,6 @@ const PelapakBestPerformanceItem: React.FC<IPelapakBestPerformanceItem> = ({
           src='/images/info.jpeg'
           objectFit={'cover'}
         />
-        {index < 3 && (
-          <Flex
-            justify={'center'}
-            w='60px'
-            h='60px'
-            borderRadius='100%'
-            backgroundColor='green.300'
-            position='absolute'
-            top='0'
-            alignItems='center'
-          >
-            <Text color='white' fontSize='40px' fontWeight='extrabold'>
-              {index + 1}
-            </Text>
-          </Flex>
-        )}
         <Box p={6}>
           <Stack spacing={0} align={'center'} mb={5}>
             <Heading fontSize={'2xl'} fontWeight={500} fontFamily={'body'}>
