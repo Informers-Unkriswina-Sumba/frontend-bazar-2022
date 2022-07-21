@@ -198,7 +198,10 @@ const RangkumanPenilaianMahasiswa: NextPage = () => {
           />
           <InputRightElement />
         </InputGroup>
-        <div className='ag-theme-alpine' style={{ height: 400, width: '100%' }}>
+        <div
+          className='ag-theme-alpine'
+          style={{ height: 1000, width: '100%' }}
+        >
           {loadingGet ? (
             <Spinner />
           ) : (
