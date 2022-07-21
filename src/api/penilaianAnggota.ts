@@ -40,3 +40,19 @@ export const ApiGetPenilaianAnggotaByGuestAndNim = async (nim: string) => {
     // return window.location.replace('/500');
   }
 };
+
+export const ApiGetListPenilaianMahasiswa = async () => {
+  const response = await axios
+    .get(`${BACKEND_URL}/shared/penilaian-anggota/list`)
+    .then((response) => {
+      return response;
+    })
+    .catch((error) => {
+      return error.response;
+    });
+  if (response) {
+    return response;
+  } else {
+    // return window.location.replace('/500');
+  }
+};

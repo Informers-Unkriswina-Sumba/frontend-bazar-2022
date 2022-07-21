@@ -1,6 +1,7 @@
 import { Box } from '@chakra-ui/layout';
 import Head from 'next/head';
-import React, { ReactNode } from 'react';
+import { useRouter } from 'next/router';
+import React, { ReactNode, useEffect } from 'react';
 import Header from '../Header';
 import NavigationUpToMainApp from '../NavigationUpToMainApp';
 
@@ -12,6 +13,8 @@ interface IProps {
 interface IProps {}
 
 const Layout: React.FC<IProps> = (props) => {
+  const router = useRouter();
+
   return (
     // <Chakra cookies={props.cookies}>
     <>
@@ -29,12 +32,18 @@ const Layout: React.FC<IProps> = (props) => {
         /> */}
       </Head>
       <Header />
-      <main className='containerMainApp'>
-        <Box borderRadius='lg' className='mainApp' position='relative'>
-          {props.children}
-          <NavigationUpToMainApp />
-        </Box>
-      </main>
+      {router.pathname === '/rangkuman-penilaian-mahasiswa' ? (
+        <main>
+          <Box px='4'>{props.children}</Box>
+        </main>
+      ) : (
+        <main className='containerMainApp'>
+          <Box borderRadius='lg' className='mainApp' position='relative'>
+            {props.children}
+            <NavigationUpToMainApp />
+          </Box>
+        </main>
+      )}
     </>
     // </Chakra>
   );

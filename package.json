@@ -13,6 +13,8 @@
     "@emotion/react": "^11.9.3",
     "@emotion/styled": "^11.9.3",
     "@fontsource/nunito": "^4.5.9",
+    "ag-grid-community": "^28.0.2",
+    "ag-grid-react": "^28.0.0",
     "axios": "^0.27.2",
     "framer-motion": "^6.3.11",
     "js-file-download": "^0.4.12",
