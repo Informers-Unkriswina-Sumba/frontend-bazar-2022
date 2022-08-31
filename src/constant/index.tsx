@@ -48,8 +48,7 @@ export const APP_ROUTE_MAIN = [
 export const BACKEND_LOCAL_URL = 'http://localhost:8080/api/v1';
 export const BACKEND_STAGING_URL = 'https://dev-sqlgenie.herokuapp.com/api/v1';
 export const BACKEND_PRODUCTION_URL =
-  'https://backend.unwinapreneur.com/api/v1'; // 'https://prod-dbmaid.herokuapp.com/api/v1'; // 'https://api-prod.dbmaid.com/api/v1';
-
+  'https://unwinapreneur.herokuapp.com/api/v1'; // 'https://backend.unwinapreneur.com/api/v1'; //
 export const BACKEND_URL: string =
   process.env.NODE_ENV === 'development'
     ? BACKEND_LOCAL_URL
